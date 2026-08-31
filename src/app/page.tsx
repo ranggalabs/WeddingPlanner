@@ -232,12 +232,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Section 3: Layanan Utama (Layer 3: Curtain Sheet 2 - Generous Clearance for Card 1 & 2) */}
+      {/* Section 3: Layanan Utama (Layer 3: Natural Scrollable Curtain Flow for Card 1 & 2) */}
       <section
         id="layanan"
-        className="sticky top-0 z-30 w-full min-h-screen bg-[#F5F1E9] curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] pt-12 sm:pt-16 md:pt-20 pb-24 sm:pb-28 md:pb-36 px-4 sm:px-6 md:px-8 flex flex-col justify-start"
+        className="relative z-30 bg-[#F5F1E9] curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] pt-10 sm:pt-14 md:pt-16 pb-20 sm:pb-24 md:pb-28 px-4 sm:px-6 md:px-8 overflow-hidden"
       >
-        <div className="max-w-6xl mx-auto w-full">
+        <div className="max-w-5xl mx-auto w-full">
           <div className="mb-4 sm:mb-6 md:mb-8">
             <SectionHeading
               subtitle="KELEBIHAN LAYANAN"
@@ -246,7 +246,7 @@ export default function Home() {
             />
           </div>
 
-          {/* Service Cards Grid / Stack */}
+          {/* Service Cards Stack */}
           <div className="flex flex-col gap-6 sm:gap-8 md:gap-10 w-full">
             <ServiceCard service={services[0]} className="shadow-xl w-full" />
             <ServiceCard service={services[1]} className="shadow-xl w-full" />
