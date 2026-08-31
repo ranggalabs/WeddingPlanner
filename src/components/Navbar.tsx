@@ -24,9 +24,12 @@ export default function Navbar() {
     el.style.bottom = "0";
     el.style.zIndex = "999999";
     el.style.backgroundColor = "#2A281F";
-    el.style.display = "none";
+    el.style.display = "block";
     el.style.opacity = "1";
     el.style.pointerEvents = "none";
+    el.style.willChange = "clip-path";
+    // Hidden via clip-path parked at right edge (not display:none)
+    el.style.clipPath = "polygon(100% 0, 100% 0, 100% 100%, 100% 100%)";
     document.body.appendChild(el);
     overlayEl.current = el;
 
@@ -56,29 +59,37 @@ export default function Navbar() {
       return;
     }
 
-    // PHASE 1: Cover screen instantly (no fade, just snap to black)
-    el.style.display = "block";
-    el.style.opacity = "1";
+    // ── PHASE 1: Wipe IN from RIGHT → LEFT (covers screen) ───────────────────
+    // Reset to right-edge hidden state instantly
     el.style.transition = "none";
+    el.style.clipPath = "polygon(100% 0, 100% 0, 100% 100%, 100% 100%)";
     el.style.pointerEvents = "all";
 
-    // PHASE 2: After 1 frame (guarantees paint) → scroll to target
+    // Double rAF: guarantees the reset is painted before transition starts
     requestAnimationFrame(() => {
-      scrollToTarget(target);
+      requestAnimationFrame(() => {
+        el.style.transition = "clip-path 0.52s cubic-bezier(0.77, 0, 0.175, 1)";
+        el.style.clipPath = "polygon(0 0, 100% 0, 100% 100%, 0 100%)"; // full screen
 
-      // PHASE 3: After 300ms hold → fade OUT revealing new section
-      setTimeout(() => {
-        el.style.transition = "opacity 0.65s cubic-bezier(0.22, 0.61, 0.36, 1)";
-        el.style.opacity = "0";
-
-        // PHASE 4: After fade-out → hide overlay + trigger image reveals
+        // ── PHASE 2: After cover completes → scroll ───────────────────────────
         setTimeout(() => {
-          el.style.display = "none";
-          el.style.transition = "none";
-          el.style.pointerEvents = "none";
-          triggerImageReveal(cleanId);
-        }, 700);
-      }, 300);
+          scrollToTarget(target);
+
+          // ── PHASE 3: Wipe OUT to LEFT (reveals new section) ────────────────
+          setTimeout(() => {
+            el.style.transition = "clip-path 0.55s cubic-bezier(0.22, 0.61, 0.36, 1)";
+            el.style.clipPath = "polygon(0 0, 0 0, 0 100%, 0 100%)"; // exits left
+
+            // ── PHASE 4: Reset + trigger image reveals ────────────────────────
+            setTimeout(() => {
+              el.style.transition = "none";
+              el.style.clipPath = "polygon(100% 0, 100% 0, 100% 100%, 100% 100%)"; // park back to right
+              el.style.pointerEvents = "none";
+              triggerImageReveal(cleanId);
+            }, 580);
+          }, 80);
+        }, 560);
+      });
     });
   }
 
