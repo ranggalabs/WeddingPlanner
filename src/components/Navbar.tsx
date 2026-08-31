@@ -17,36 +17,17 @@ export default function Navbar() {
   return (
     <>
       <header className="fixed top-5 left-0 right-0 z-50 flex justify-center px-4">
-        <nav className="glass-nav rounded-full px-6 py-3 flex items-center justify-between w-full max-w-5xl shadow-sm transition-all duration-300">
-          {/* Left Side of Logo: Section 2 & Section 3 */}
-          <div className="flex items-center space-x-6">
-            <button
-              onClick={() => setIsOpen(true)}
-              className="flex items-center space-x-2 text-xs uppercase tracking-widest text-[#2A281F] font-medium hover:opacity-70 transition-opacity cursor-pointer"
-            >
-              <Menu size={16} />
-              <span>Menu</span>
-            </button>
+        <nav className="glass-nav rounded-full px-5 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between w-full max-w-4xl shadow-sm transition-all duration-300">
+          {/* Left: Menu Button */}
+          <button
+            onClick={() => setIsOpen(true)}
+            className="flex items-center space-x-2 text-xs uppercase tracking-widest text-[#2A281F] font-medium hover:opacity-70 transition-opacity cursor-pointer py-1"
+          >
+            <Menu size={16} />
+            <span>Menu</span>
+          </button>
 
-            <div className="hidden md:flex items-center space-x-5 text-xs uppercase tracking-wider text-[#2A281F]">
-              <a
-                href="/#intro-section"
-                onClick={(e) => handleNav(e, "intro-section")}
-                className="link-underline cursor-pointer"
-              >
-                Cerita
-              </a>
-              <a
-                href="/#layanan"
-                onClick={(e) => handleNav(e, "layanan")}
-                className="link-underline cursor-pointer"
-              >
-                Layanan
-              </a>
-            </div>
-          </div>
-
-          {/* Center Logo: Home (Section 1) */}
+          {/* Center Logo */}
           <a
             href="/"
             onClick={(e) => handleNav(e, 0)}
@@ -55,33 +36,14 @@ export default function Navbar() {
             BALI WED
           </a>
 
-          {/* Right Side of Logo: Section 4, Section 5, & Section 7 CTA */}
-          <div className="flex items-center space-x-5">
-            <div className="hidden md:flex items-center space-x-5 text-xs uppercase tracking-wider text-[#2A281F]">
-              <a
-                href="/#paket"
-                onClick={(e) => handleNav(e, "paket")}
-                className="link-underline font-medium cursor-pointer"
-              >
-                Paket
-              </a>
-              <a
-                href="/#venue"
-                onClick={(e) => handleNav(e, "venue")}
-                className="link-underline cursor-pointer"
-              >
-                Venue
-              </a>
-            </div>
-
-            <a
-              href="/#kontak-section"
-              onClick={(e) => handleNav(e, "kontak-section")}
-              className="hidden sm:inline-flex text-xs uppercase tracking-wider font-semibold text-[#2A281F] border border-[#2A281F]/30 rounded-full px-4 py-1.5 hover:bg-[#2A281F] hover:text-white transition-colors cursor-pointer"
-            >
-              Konsultasi
-            </a>
-          </div>
+          {/* Right: Konsultasi CTA */}
+          <a
+            href="/#kontak-section"
+            onClick={(e) => handleNav(e, "kontak-section")}
+            className="inline-flex text-xs uppercase tracking-wider font-semibold text-[#2A281F] border border-[#2A281F]/30 rounded-full px-4 py-1.5 hover:bg-[#2A281F] hover:text-white transition-colors cursor-pointer"
+          >
+            Konsultasi
+          </a>
         </nav>
       </header>
 
