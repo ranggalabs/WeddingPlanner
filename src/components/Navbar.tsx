@@ -12,22 +12,36 @@ export default function Navbar() {
     e.preventDefault();
     setIsOpen(false);
 
-    // Trigger Clip-Path & Mask Reveal Animations on the destination section
+    // Scroll to destination
+    scrollToTarget(target);
+
+    // Trigger Clip-Path & Mask Reveal Animations (nectar-mask-reveal polygon from left to right)
     const targetElement =
       typeof target === "string" ? document.getElementById(target) : null;
 
     if (targetElement) {
-      targetElement.classList.remove("nectar-mask-reveal");
-      // Force reflow to restart CSS animation
+      // 1. Apply section-level polygon clip-path reveal
+      targetElement.classList.remove("section-mask-reveal");
       void targetElement.offsetWidth;
-      targetElement.classList.add("nectar-mask-reveal");
+      targetElement.classList.add("section-mask-reveal");
+
+      // 2. Apply clip-path polygon reveal on all images inside target section
+      const images = targetElement.querySelectorAll<HTMLImageElement>("img");
+      images.forEach((img) => {
+        img.style.clipPath = "polygon(0 0, 0 0, 0 100%, 0 100%)";
+        img.style.transition = "clip-path 1.2s cubic-bezier(0.22, 0.61, 0.36, 1)";
+        
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            img.style.clipPath = "polygon(0 0, 100% 0, 100% 100%, 0 100%)";
+          }, 150);
+        });
+      });
 
       setTimeout(() => {
-        targetElement.classList.remove("nectar-mask-reveal");
-      }, 1200);
+        targetElement.classList.remove("section-mask-reveal");
+      }, 1400);
     }
-
-    scrollToTarget(target);
   };
 
   return (

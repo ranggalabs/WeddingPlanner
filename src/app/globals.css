@@ -149,53 +149,42 @@ body {
   scrollbar-width: none;
 }
 
-/* Clip-Path & Mask Reveal Animations (nectar-mask-reveal) */
-@keyframes nectarMaskReveal {
+/* Clip-Path & Mask Reveal Animations (polygon nectar-mask-reveal) */
+.mask-reveal-container {
+  overflow: hidden;
+  position: relative;
+}
+
+.mask-reveal-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+  transition: clip-path 1.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: clip-path;
+}
+
+/* Revealed State: Gambar Terbuka Penuh dari Kiri ke Kanan */
+.mask-reveal-container.revealed .mask-reveal-img,
+.mask-reveal-img.revealed {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%) !important;
+}
+
+/* Section-level polygon mask reveal animation */
+@keyframes sectionPolygonReveal {
   0% {
-    clip-path: inset(0 0 100% 0);
-    opacity: 0;
-    transform: scale(1.04) translateY(20px);
-  }
-  40% {
-    opacity: 0.7;
+    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+    opacity: 0.3;
   }
   100% {
-    clip-path: inset(0 0 0 0);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
     opacity: 1;
-    transform: scale(1) translateY(0);
   }
 }
 
-@keyframes nectarCurtainWipe {
-  0% {
-    clip-path: inset(0 0 0 0);
-    opacity: 0.85;
-  }
-  50% {
-    clip-path: inset(0 0 0 100%);
-    opacity: 0.4;
-  }
-  100% {
-    clip-path: inset(0 0 0 100%);
-    opacity: 0;
-  }
-}
-
-.nectar-mask-reveal {
-  animation: nectarMaskReveal 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  will-change: clip-path, transform, opacity;
-}
-
-.nectar-curtain-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  pointer-events: none;
-  background-color: #2A281F;
-}
-
-.nectar-curtain-overlay.active {
-  animation: nectarCurtainWipe 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+.section-mask-reveal {
+  animation: sectionPolygonReveal 1.2s cubic-bezier(0.22, 0.61, 0.36, 1) forwards !important;
+  will-change: clip-path, opacity;
 }
 
 /* Lenis smooth momentum scroll styles */
