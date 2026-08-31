@@ -12,7 +12,6 @@ export default function Navbar() {
   // Overlay lives ENTIRELY outside React — appended directly to document.body
   // so React state updates / re-renders can NEVER reset its styles.
   const overlayEl = useRef<HTMLDivElement | null>(null);
-  const isAnimating = useRef(false);
 
   useEffect(() => {
     setMounted(true);
@@ -24,7 +23,7 @@ export default function Navbar() {
     el.style.cssText = [
       "position:fixed",
       "inset:0",
-      "z-index:9000",
+      "z-index:9999",
       "display:none",
       "opacity:0",
       "background:#2A281F",
@@ -59,18 +58,12 @@ export default function Navbar() {
    * 4. staggered per-image clip-path wipe on target section
    */
   function runTransition(target: string | number) {
-    if (isAnimating.current) {
-      scrollToTarget(target);
-      return;
-    }
-
     const el = overlayEl.current;
     if (!el) {
       scrollToTarget(target);
       return;
     }
 
-    isAnimating.current = true;
     const cleanId =
       typeof target === "string" ? target.replace(/^(\/)?#/, "") : null;
 
@@ -99,7 +92,6 @@ export default function Navbar() {
         setTimeout(() => {
           el.style.display = "none";
           el.style.pointerEvents = "none";
-          isAnimating.current = false;
 
           if (!cleanId) return;
           const section = document.getElementById(cleanId);
@@ -126,8 +118,10 @@ export default function Navbar() {
     target: string | number
   ) => {
     e.preventDefault();
-    setIsOpen(false);       // close menu drawer
-    runTransition(target);  // start overlay immediately (React re-renders can't touch overlayEl)
+    // Start the overlay animation FIRST (z-9999, covers menu drawer too)
+    // Then close the menu drawer — user won't see it close because overlay is on top
+    runTransition(target);
+    setTimeout(() => setIsOpen(false), 300);
   };
 
   const menuDrawer = isOpen ? (
