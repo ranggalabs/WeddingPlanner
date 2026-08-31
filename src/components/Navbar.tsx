@@ -24,12 +24,11 @@ export default function Navbar() {
     el.style.bottom = "0";
     el.style.zIndex = "999999";
     el.style.backgroundColor = "#2A281F";
-    el.style.display = "block";
+    el.style.display = "none";     // hidden initially
     el.style.opacity = "1";
     el.style.pointerEvents = "none";
     el.style.willChange = "clip-path";
-    // Hidden via clip-path parked at right edge (not display:none)
-    el.style.clipPath = "polygon(100% 0, 100% 0, 100% 100%, 100% 100%)";
+    el.style.clipPath = "inset(0 100% 0 0)"; // right edge — invisible
     document.body.appendChild(el);
     overlayEl.current = el;
 
@@ -59,37 +58,38 @@ export default function Navbar() {
       return;
     }
 
-    // ── PHASE 1: Wipe IN from RIGHT → LEFT (covers screen) ───────────────────
-    // Reset to right-edge hidden state instantly
+    // ── PHASE 1: Wipe IN — kanan → kiri (menutup layar) ─────────────────────
+    // Set starting clip position (right edge, invisible)
     el.style.transition = "none";
-    el.style.clipPath = "polygon(100% 0, 100% 0, 100% 100%, 100% 100%)";
+    el.style.clipPath = "inset(0 100% 0 0)";    // clipped from right = nothing visible
     el.style.pointerEvents = "all";
+    el.style.display = "block";                  // changing display:none→block = definite reflow
 
-    // Double rAF: guarantees the reset is painted before transition starts
+    // Single rAF is enough after display change — browser MUST paint before next frame
     requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        el.style.transition = "clip-path 0.52s cubic-bezier(0.77, 0, 0.175, 1)";
-        el.style.clipPath = "polygon(0 0, 100% 0, 100% 100%, 0 100%)"; // full screen
+      // Wipe from right edge → full screen (left to right coverage)
+      el.style.transition = "clip-path 0.52s cubic-bezier(0.77, 0, 0.175, 1)";
+      el.style.clipPath = "inset(0 0% 0 0)";     // fully visible = screen covered
 
-        // ── PHASE 2: After cover completes → scroll ───────────────────────────
+      // ── PHASE 2: After cover completes → scroll ───────────────────────────
+      setTimeout(() => {
+        scrollToTarget(target);
+
+        // ── PHASE 3: Wipe OUT — layar → kiri (mengungkap section baru) ────────
         setTimeout(() => {
-          scrollToTarget(target);
+          el.style.transition = "clip-path 0.55s cubic-bezier(0.22, 0.61, 0.36, 1)";
+          el.style.clipPath = "inset(0 0% 0 100%)"; // clip from left = exits left
 
-          // ── PHASE 3: Wipe OUT to LEFT (reveals new section) ────────────────
+          // ── PHASE 4: Reset + trigger image reveals ────────────────────────
           setTimeout(() => {
-            el.style.transition = "clip-path 0.55s cubic-bezier(0.22, 0.61, 0.36, 1)";
-            el.style.clipPath = "polygon(0 0, 0 0, 0 100%, 0 100%)"; // exits left
-
-            // ── PHASE 4: Reset + trigger image reveals ────────────────────────
-            setTimeout(() => {
-              el.style.transition = "none";
-              el.style.clipPath = "polygon(100% 0, 100% 0, 100% 100%, 100% 100%)"; // park back to right
-              el.style.pointerEvents = "none";
-              triggerImageReveal(cleanId);
-            }, 580);
-          }, 80);
-        }, 560);
-      });
+            el.style.display = "none";
+            el.style.transition = "none";
+            el.style.clipPath = "inset(0 100% 0 0)";  // reset to right edge for next use
+            el.style.pointerEvents = "none";
+            triggerImageReveal(cleanId);
+          }, 580);
+        }, 80);
+      }, 560);
     });
   }
 
