@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, forwardRef, useImperativeHandle } from "react";
+import { useEffect, useRef, useState, forwardRef, useImperativeHandle } from "react";
 import { createPortal } from "react-dom";
 
 export interface MaskRevealCurtainHandle {
@@ -70,7 +70,10 @@ const MaskRevealCurtain = forwardRef<MaskRevealCurtainHandle>((_, ref) => {
     };
   }, []);
 
-  if (typeof window === "undefined") return null;
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+
+  if (!mounted) return null;
 
   return createPortal(
     <div
