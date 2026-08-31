@@ -232,13 +232,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Section 3: Layanan Utama (Layer 3: Natural Scrollable Curtain Flow for Card 1 & 2) */}
+      {/* Section 3: Layanan Utama (Layer 3: Stacking Cards with Sticky Curtain Transition to Paket) */}
       <section
         id="layanan"
-        className="relative z-30 bg-[#F5F1E9] curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] pt-10 sm:pt-14 md:pt-16 pb-20 sm:pb-24 md:pb-28 px-4 sm:px-6 md:px-8 overflow-hidden"
+        className="sticky top-0 z-30 w-full min-h-screen bg-[#F5F1E9] curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] pt-8 sm:pt-12 md:pt-14 pb-16 sm:pb-20 md:pb-24 px-4 sm:px-6 md:px-8 flex flex-col justify-start sm:justify-center overflow-hidden"
       >
         <div className="max-w-5xl mx-auto w-full">
-          <div className="mb-4 sm:mb-6 md:mb-8">
+          <div className="mb-3 sm:mb-5 md:mb-6">
             <SectionHeading
               subtitle="KELEBIHAN LAYANAN"
               title="Pendekatan Editorial Dalam Setiap Detail"
@@ -246,10 +246,10 @@ export default function Home() {
             />
           </div>
 
-          {/* Service Cards Stack */}
-          <div className="flex flex-col gap-6 sm:gap-8 md:gap-10 w-full">
-            <ServiceCard service={services[0]} className="shadow-xl w-full" />
-            <ServiceCard service={services[1]} className="shadow-xl w-full" />
+          {/* Service Cards Stacking Container (Card 1 di atas, Card 2 di bawahnya, fit 1 screen) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 w-full">
+            <ServiceCard service={services[0]} className="shadow-lg w-full" />
+            <ServiceCard service={services[1]} className="shadow-lg w-full" />
           </div>
         </div>
       </section>
