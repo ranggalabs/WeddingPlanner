@@ -10,23 +10,19 @@ export default function Navbar() {
   const [mounted, setMounted] = useState(false);
   const overlayEl = useRef<HTMLDivElement | null>(null);
 
+  // Create overlay element imperatively — outside React, cannot be reset by re-renders
   useEffect(() => {
     setMounted(true);
 
-    // Create the fullscreen overlay directly in document.body
-    // Completely outside React so re-renders never touch it
     const el = document.createElement("div");
     el.id = "bw-transition-overlay";
     el.setAttribute("aria-hidden", "true");
-    // Start hidden
     el.style.position = "fixed";
     el.style.top = "0";
     el.style.left = "0";
     el.style.right = "0";
     el.style.bottom = "0";
-    el.style.width = "100vw";
-    el.style.height = "100vh";
-    el.style.zIndex = "999999"; // highest possible
+    el.style.zIndex = "999999";
     el.style.backgroundColor = "#2A281F";
     el.style.display = "none";
     el.style.opacity = "1";
@@ -40,11 +36,14 @@ export default function Navbar() {
     };
   }, []);
 
+  // ESC key closes menu
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setIsOpen(false); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsOpen(false);
+    };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  }, []); // intentionally empty — setIsOpen is stable
 
   function runTransition(target: string | number) {
     const el = overlayEl.current;
@@ -52,29 +51,27 @@ export default function Navbar() {
       typeof target === "string" ? target.replace(/^(\/)?#/, "") : null;
 
     if (!el) {
-      // No overlay — just scroll directly
       scrollToTarget(target);
       triggerImageReveal(cleanId);
       return;
     }
 
-    // ── PHASE 1: SNAP overlay to fully visible (NO animation, instant) ───────
-    el.style.transition = "none";
-    el.style.opacity = "1";
+    // PHASE 1: Cover screen instantly (no fade, just snap to black)
     el.style.display = "block";
+    el.style.opacity = "1";
+    el.style.transition = "none";
     el.style.pointerEvents = "all";
 
-    // ── PHASE 2: Wait 1 frame for paint, then scroll ─────────────────────────
+    // PHASE 2: After 1 frame (guarantees paint) → scroll to target
     requestAnimationFrame(() => {
-      // Scroll to target section (overlay is covering everything)
       scrollToTarget(target);
 
-      // ── PHASE 3: After 300ms → fade overlay OUT revealing new section ────────
+      // PHASE 3: After 300ms hold → fade OUT revealing new section
       setTimeout(() => {
         el.style.transition = "opacity 0.65s cubic-bezier(0.22, 0.61, 0.36, 1)";
         el.style.opacity = "0";
 
-        // ── PHASE 4: After fade-out → hide overlay + trigger image reveals ─────
+        // PHASE 4: After fade-out → hide overlay + trigger image reveals
         setTimeout(() => {
           el.style.display = "none";
           el.style.transition = "none";
@@ -89,7 +86,6 @@ export default function Navbar() {
     if (!cleanId) return;
     const section = document.getElementById(cleanId);
     if (!section) return;
-
     const containers = Array.from(
       section.querySelectorAll<HTMLElement>(".mask-reveal-container")
     );
@@ -107,9 +103,8 @@ export default function Navbar() {
     target: string | number
   ) => {
     e.preventDefault();
-    // Close menu immediately
+    e.stopPropagation(); // prevent LenisProvider capture handler from also firing
     setIsOpen(false);
-    // Run transition (overlay is z-999999, React re-renders don't affect it)
     runTransition(target);
   };
 
@@ -130,17 +125,19 @@ export default function Navbar() {
           </p>
           <ul className="space-y-4 sm:space-y-5">
             {[
-              { num: "01.", label: "Beranda",            target: 0 as string | number },
-              { num: "02.", label: "Kenapa Bali",        target: "intro-section" },
-              { num: "03.", label: "Layanan Utama",      target: "layanan" },
-              { num: "04.", label: "Paket Layanan",      target: "paket" },
-              { num: "05.", label: "Venue Pilihan",      target: "venue" },
-              { num: "06.", label: "Testimoni Pasangan", target: "testimoni" },
-              { num: "07.", label: "Hubungi Kami",       target: "kontak-section" },
-            ].map(({ num, label, target }) => (
+              { num: "01.", label: "Beranda",            target: 0 as string | number, href: "/" },
+              { num: "02.", label: "Kenapa Bali",        target: "intro-section",      href: "/#intro-section" },
+              { num: "03.", label: "Layanan Utama",      target: "layanan",            href: "/#layanan" },
+              { num: "04.", label: "Paket Layanan",      target: "paket",              href: "/#paket" },
+              { num: "05.", label: "Venue Pilihan",      target: "venue",              href: "/#venue" },
+              { num: "06.", label: "Testimoni Pasangan", target: "testimoni",          href: "/#testimoni" },
+              { num: "07.", label: "Hubungi Kami",       target: "kontak-section",     href: "/#kontak-section" },
+            ].map(({ num, label, target, href }) => (
               <li key={num}>
+                {/* data-nav-handled tells LenisProvider to skip this anchor */}
                 <a
-                  href={typeof target === "number" ? "/" : `/#${target}`}
+                  href={href}
+                  data-nav-handled="true"
                   onClick={(e) => handleNav(e, target)}
                   className="font-libre-caslon text-2xl sm:text-3xl text-[#2A281F] hover:translate-x-2 transition-transform inline-flex items-baseline space-x-3 group cursor-pointer"
                 >
@@ -185,8 +182,10 @@ export default function Navbar() {
             <span>Menu</span>
           </button>
 
+          {/* data-nav-handled tells LenisProvider to skip this anchor */}
           <a
             href="/"
+            data-nav-handled="true"
             onClick={(e) => handleNav(e, 0)}
             className="font-libre-caslon text-lg md:text-xl font-medium tracking-tight text-[#2A281F] cursor-pointer"
           >
@@ -195,6 +194,7 @@ export default function Navbar() {
 
           <a
             href="/#kontak-section"
+            data-nav-handled="true"
             onClick={(e) => handleNav(e, "kontak-section")}
             className="inline-flex text-xs uppercase tracking-wider font-semibold text-[#2A281F] border border-[#2A281F]/30 rounded-full px-4 py-1.5 hover:bg-[#2A281F] hover:text-white transition-colors cursor-pointer"
           >
@@ -203,9 +203,8 @@ export default function Navbar() {
         </nav>
       </header>
 
-      {mounted && menuDrawer
-        ? createPortal(menuDrawer, document.body)
-        : null}
+      {/* Menu drawer portal */}
+      {mounted && menuDrawer ? createPortal(menuDrawer, document.body) : null}
     </>
   );
 }

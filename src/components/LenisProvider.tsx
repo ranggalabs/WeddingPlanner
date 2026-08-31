@@ -39,6 +39,10 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
       const anchor = target.closest("a");
       if (!anchor) return;
 
+      // If the anchor is a Navbar nav link (data-nav-handled),
+      // let the React onClick handler (handleNav) process it — do NOT intercept.
+      if (anchor.hasAttribute("data-nav-handled")) return;
+
       const href = anchor.getAttribute("href");
       if (!href) return;
 
