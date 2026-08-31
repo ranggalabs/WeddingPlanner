@@ -11,6 +11,22 @@ export default function Navbar() {
   const handleNav = (e: React.MouseEvent<HTMLAnchorElement>, target: string | number) => {
     e.preventDefault();
     setIsOpen(false);
+
+    // Trigger Clip-Path & Mask Reveal Animations on the destination section
+    const targetElement =
+      typeof target === "string" ? document.getElementById(target) : null;
+
+    if (targetElement) {
+      targetElement.classList.remove("nectar-mask-reveal");
+      // Force reflow to restart CSS animation
+      void targetElement.offsetWidth;
+      targetElement.classList.add("nectar-mask-reveal");
+
+      setTimeout(() => {
+        targetElement.classList.remove("nectar-mask-reveal");
+      }, 1200);
+    }
+
     scrollToTarget(target);
   };
 

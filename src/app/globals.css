@@ -149,6 +149,55 @@ body {
   scrollbar-width: none;
 }
 
+/* Clip-Path & Mask Reveal Animations (nectar-mask-reveal) */
+@keyframes nectarMaskReveal {
+  0% {
+    clip-path: inset(0 0 100% 0);
+    opacity: 0;
+    transform: scale(1.04) translateY(20px);
+  }
+  40% {
+    opacity: 0.7;
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes nectarCurtainWipe {
+  0% {
+    clip-path: inset(0 0 0 0);
+    opacity: 0.85;
+  }
+  50% {
+    clip-path: inset(0 0 0 100%);
+    opacity: 0.4;
+  }
+  100% {
+    clip-path: inset(0 0 0 100%);
+    opacity: 0;
+  }
+}
+
+.nectar-mask-reveal {
+  animation: nectarMaskReveal 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: clip-path, transform, opacity;
+}
+
+.nectar-curtain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  background-color: #2A281F;
+}
+
+.nectar-curtain-overlay.active {
+  animation: nectarCurtainWipe 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 /* Lenis smooth momentum scroll styles */
 html.lenis, html.lenis body {
   height: auto;
@@ -169,3 +218,4 @@ html.lenis, html.lenis body {
 .lenis.lenis-scrolling iframe {
   pointer-events: none;
 }
+
