@@ -8,7 +8,12 @@ import { scrollToTarget } from "@/lib/scrollTo";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const curtainRef = useRef<HTMLDivElement>(null);
+
+  // Two-layer curtain refs (like Sarah Haywood Salient nectar-mask-reveal):
+  // Layer A: the opaque "curtain" panel that sweeps from bottom → top
+  // Layer B: inner content that stays visible as curtain exits
+  const curtainARef = useRef<HTMLDivElement>(null);
+  const curtainBRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -29,103 +34,115 @@ export default function Navbar() {
   }, [isOpen]);
 
   /**
-   * Trigger per-image clip-path reveal on all .mask-reveal-container inside a section.
-   * Staggered: each container reveals 120ms after the previous one.
+   * NECTAR MASK REVEAL — Sarah Haywood style
+   *
+   * Two curtain panels animate in sequence:
+   *
+   * 1. Panel A (dark, solid) sweeps UP from bottom — covers full screen (500ms)
+   * 2. While covered: scroll() to target section
+   * 3. Panel A sweeps UP OFF the screen — revealing the new section (500ms)
+   *    Meanwhile Panel B (accent color, slightly delayed) follows behind giving a
+   *    "double-curtain wipe" depth effect exactly like Salient nectar-mask-reveal.
+   *
+   * After curtain fully exits:
+   * 4. Per-image clip-path staggered reveal fires on target section images.
    */
-  function revealSectionImages(sectionId: string) {
-    const section = document.getElementById(sectionId);
-    if (!section) return;
+  function triggerCurtainReveal(target: string | number) {
+    const a = curtainARef.current;
+    const b = curtainBRef.current;
+    if (!a || !b) {
+      scrollToTarget(target);
+      return;
+    }
 
-    const containers = Array.from(
-      section.querySelectorAll<HTMLElement>(".mask-reveal-container")
-    );
+    const cleanId =
+      typeof target === "string" ? target.replace(/^(\/)?#/, "") : null;
 
-    // Reset first (re-animate even if section was visited before)
-    containers.forEach((c) => {
-      c.classList.remove("revealed", "reveal-delay-1", "reveal-delay-2", "reveal-delay-3");
-    });
+    // ── RESET BOTH PANELS (instant, no transition) ──────────────────────────
+    const reset = (el: HTMLDivElement) => {
+      el.style.transition = "none";
+      el.style.transform = "translateY(100%)"; // parked below viewport
+      el.style.visibility = "visible";
+    };
+    reset(a);
+    reset(b);
+    void a.offsetWidth; // force reflow
 
-    // Force reflow so removal is committed
-    void section.offsetWidth;
+    // ── PHASE 1: Panel A sweeps UP from bottom → full screen (500ms) ────────
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        a.style.transition = "transform 0.52s cubic-bezier(0.77, 0, 0.175, 1)";
+        a.style.transform = "translateY(0%)";
 
-    // Stagger reveal
-    containers.forEach((c, i) => {
-      const delay = i * 120;
-      setTimeout(() => {
-        if (i === 1) c.classList.add("reveal-delay-1");
-        if (i === 2) c.classList.add("reveal-delay-2");
-        if (i >= 3) c.classList.add("reveal-delay-3");
-        c.classList.add("revealed");
-      }, delay);
+        // Panel B follows 80ms behind Panel A (depth / double-curtain effect)
+        setTimeout(() => {
+          b.style.transition = "transform 0.52s cubic-bezier(0.77, 0, 0.175, 1)";
+          b.style.transform = "translateY(0%)";
+        }, 80);
+
+        // ── PHASE 2: scroll while screen is covered ────────────────────────
+        setTimeout(() => {
+          scrollToTarget(target);
+
+          // ── PHASE 3: Panel A sweeps UP off screen → reveals new section ──
+          setTimeout(() => {
+            a.style.transition = "transform 0.54s cubic-bezier(0.77, 0, 0.175, 1)";
+            a.style.transform = "translateY(-100%)";
+
+            // Panel B exits 70ms after A — creates trailing depth effect
+            setTimeout(() => {
+              b.style.transition = "transform 0.54s cubic-bezier(0.77, 0, 0.175, 1)";
+              b.style.transform = "translateY(-100%)";
+            }, 70);
+
+            // ── PHASE 4: after curtains exit → trigger per-image reveal ────
+            setTimeout(() => {
+              // Hide and reset both panels
+              a.style.visibility = "hidden";
+              b.style.visibility = "hidden";
+              a.style.transition = "none";
+              b.style.transition = "none";
+              a.style.transform = "translateY(100%)";
+              b.style.transform = "translateY(100%)";
+
+              // Staggered clip-path reveal on images in the target section
+              if (cleanId) {
+                const section = document.getElementById(cleanId);
+                if (section) {
+                  const containers = Array.from(
+                    section.querySelectorAll<HTMLElement>(".mask-reveal-container")
+                  );
+                  // Reset reveal state
+                  containers.forEach((c) =>
+                    c.classList.remove("revealed", "reveal-delay-1", "reveal-delay-2", "reveal-delay-3")
+                  );
+                  void section.offsetWidth; // force reflow
+
+                  // Fire staggered reveals
+                  containers.forEach((c, i) => {
+                    setTimeout(() => {
+                      if (i === 1) c.classList.add("reveal-delay-1");
+                      if (i === 2) c.classList.add("reveal-delay-2");
+                      if (i >= 3) c.classList.add("reveal-delay-3");
+                      c.classList.add("revealed");
+                    }, i * 130);
+                  });
+                }
+              }
+            }, 600);
+          }, 80);
+        }, 540);
+      });
     });
   }
 
-  /**
-   * Full navigation handler:
-   * 1. Close menu
-   * 2. Curtain sweeps IN (left → right, covers screen, 550ms)
-   * 3. Scroll to target (while screen is hidden)
-   * 4. Curtain sweeps OUT (left → right, reveals new section, 580ms)
-   * 5. Trigger per-image clip-path polygon reveal on landing section
-   */
   const handleNav = (
     e: React.MouseEvent<HTMLAnchorElement>,
     target: string | number
   ) => {
     e.preventDefault();
     setIsOpen(false);
-
-    const el = curtainRef.current;
-    const cleanId =
-      typeof target === "string" ? target.replace(/^(\/)?#/, "") : null;
-
-    if (!el) {
-      // No curtain yet — just scroll
-      scrollToTarget(target);
-      if (cleanId) revealSectionImages(cleanId);
-      return;
-    }
-
-    // ── Phase 1: reset curtain to fully-hidden left edge (no transition) ──
-    el.style.transition = "none";
-    el.style.clipPath = "polygon(0 0, 0 0, 0 100%, 0 100%)";
-    el.style.visibility = "visible";
-    el.style.pointerEvents = "all";
-
-    // Double rAF ensures the "none-transition" reset is committed to layout
-    // before we start the sweep-in transition.
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        // ── Phase 2: sweep IN — left edge moves to right edge (covers screen) ──
-        el.style.transition =
-          "clip-path 0.55s cubic-bezier(0.77, 0, 0.175, 1)";
-        el.style.clipPath = "polygon(0 0, 100% 0, 100% 100%, 0 100%)";
-
-        setTimeout(() => {
-          // ── Phase 3: scroll while hidden ──
-          scrollToTarget(target);
-
-          // Small pause for browser to settle on new scroll position
-          setTimeout(() => {
-            // ── Phase 4: sweep OUT — right edge peels away to right ──
-            el.style.transition =
-              "clip-path 0.58s cubic-bezier(0.22, 0.61, 0.36, 1)";
-            el.style.clipPath =
-              "polygon(100% 0, 100% 0, 100% 100%, 100% 100%)";
-
-            // ── Phase 5: after curtain fully exits → trigger per-image reveal ──
-            setTimeout(() => {
-              el.style.visibility = "hidden";
-              el.style.pointerEvents = "none";
-              el.style.clipPath = "polygon(0 0, 0 0, 0 100%, 0 100%)";
-              el.style.transition = "none";
-
-              if (cleanId) revealSectionImages(cleanId);
-            }, 600);
-          }, 80);
-        }, 580);
-      });
-    });
+    triggerCurtainReveal(target);
   };
 
   const menuDrawer = isOpen ? (
@@ -149,13 +166,13 @@ export default function Navbar() {
 
           <ul className="space-y-4 sm:space-y-5">
             {[
-              { num: "01.", label: "Beranda", target: 0 as string | number },
-              { num: "02.", label: "Kenapa Bali", target: "intro-section" },
-              { num: "03.", label: "Layanan Utama", target: "layanan" },
-              { num: "04.", label: "Paket Layanan", target: "paket" },
-              { num: "05.", label: "Venue Pilihan", target: "venue" },
-              { num: "06.", label: "Testimoni Pasangan", target: "testimoni" },
-              { num: "07.", label: "Hubungi Kami", target: "kontak-section" },
+              { num: "01.", label: "Beranda",            target: 0 as string | number },
+              { num: "02.", label: "Kenapa Bali",         target: "intro-section" },
+              { num: "03.", label: "Layanan Utama",       target: "layanan" },
+              { num: "04.", label: "Paket Layanan",       target: "paket" },
+              { num: "05.", label: "Venue Pilihan",       target: "venue" },
+              { num: "06.", label: "Testimoni Pasangan",  target: "testimoni" },
+              { num: "07.", label: "Hubungi Kami",        target: "kontak-section" },
             ].map(({ num, label, target }) => (
               <li key={num}>
                 <a
@@ -188,8 +205,6 @@ export default function Navbar() {
           </a>
         </div>
       </div>
-
-      {/* Click backdrop to close */}
       <div className="flex-1" onClick={() => setIsOpen(false)} />
     </div>
   ) : null;
@@ -224,28 +239,50 @@ export default function Navbar() {
         </nav>
       </header>
 
-      {/* All portals rendered together into document.body */}
       {mounted &&
         createPortal(
           <>
-            {/* ─── Fullscreen Clip-Path Curtain (nectar-mask-reveal, z-9000) ─── */}
+            {/*
+              ── NECTAR MASK REVEAL CURTAINS (Sarah Haywood / Salient style) ──
+              Two panels that sweep from bottom → cover screen → exit to top.
+              Panel A (foreground, dark charcoal)
+              Panel B (background, slightly lighter — depth/trailing effect)
+              Both parked off-screen below at translateY(100%) initially.
+            */}
+
+            {/* Panel A — foreground curtain */}
             <div
-              ref={curtainRef}
+              ref={curtainARef}
               aria-hidden="true"
               style={{
                 position: "fixed",
                 inset: 0,
-                zIndex: 9000,
+                zIndex: 9100,
                 pointerEvents: "none",
                 visibility: "hidden",
-                background:
-                  "linear-gradient(135deg, #2A281F 0%, #1a1812 60%, #2A281F 100%)",
-                clipPath: "polygon(0 0, 0 0, 0 100%, 0 100%)",
-                willChange: "clip-path",
+                background: "#2A281F",
+                transform: "translateY(100%)",
+                willChange: "transform",
               }}
             />
 
-            {/* ─── Slide-out Menu Drawer (z-9500, above curtain) ─── */}
+            {/* Panel B — trailing depth curtain */}
+            <div
+              ref={curtainBRef}
+              aria-hidden="true"
+              style={{
+                position: "fixed",
+                inset: 0,
+                zIndex: 9050,
+                pointerEvents: "none",
+                visibility: "hidden",
+                background: "#8A8477",
+                transform: "translateY(100%)",
+                willChange: "transform",
+              }}
+            />
+
+            {/* Menu drawer (above curtains) */}
             {menuDrawer}
           </>,
           document.body
