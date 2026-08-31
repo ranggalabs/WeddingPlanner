@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import { scrollToTarget } from "@/lib/scrollTo";
@@ -8,115 +8,130 @@ import { scrollToTarget } from "@/lib/scrollTo";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const overlayRef = useRef<HTMLDivElement>(null);
+
+  // Overlay lives ENTIRELY outside React — appended directly to document.body
+  // so React state updates / re-renders can NEVER reset its styles.
+  const overlayEl = useRef<HTMLDivElement | null>(null);
   const isAnimating = useRef(false);
 
   useEffect(() => {
     setMounted(true);
-    const handleScroll = () => { if (isOpen) setIsOpen(false); };
-    const handleKeyDown = (e: KeyboardEvent) => { if (e.key === "Escape") setIsOpen(false); };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("keydown", handleKeyDown);
+
+    // Create overlay element imperatively, attach to body
+    const el = document.createElement("div");
+    el.setAttribute("aria-hidden", "true");
+    el.id = "bw-page-transition";
+    el.style.cssText = [
+      "position:fixed",
+      "inset:0",
+      "z-index:9000",
+      "display:none",
+      "opacity:0",
+      "background:#2A281F",
+      "pointer-events:none",
+    ].join(";");
+    document.body.appendChild(el);
+    overlayEl.current = el;
+
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("keydown", handleKeyDown);
+      if (document.body.contains(el)) document.body.removeChild(el);
+      overlayEl.current = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => { if (isOpen) setIsOpen(false); };
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setIsOpen(false); };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("keydown", onKey);
     };
   }, [isOpen]);
 
   /**
-   * NECTAR PAGE TRANSITION — Full-screen overlay:
+   * PAGE TRANSITION — full-screen overlay fade:
    *
-   * Step 1: Overlay fades/appears IN (covers entire screen)  — 400ms
-   * Step 2: scrollToTarget fires (while screen is covered)
-   * Step 3: Overlay fades/disappears OUT (reveals new section) — 500ms
-   * Step 4: Per-image staggered clip-path reveal on target section
+   * 1. overlay fades IN (opacity 0→1, 400ms)  → screen covered
+   * 2. scrollToTarget fires (hidden behind overlay)
+   * 3. overlay fades OUT (opacity 1→0, 500ms) → new section revealed
+   * 4. staggered per-image clip-path wipe on target section
    */
-  const triggerTransition = useCallback((target: string | number) => {
+  function runTransition(target: string | number) {
     if (isAnimating.current) {
-      // Fallback if already animating
       scrollToTarget(target);
       return;
     }
 
-    const overlay = overlayRef.current;
-    if (!overlay) {
+    const el = overlayEl.current;
+    if (!el) {
       scrollToTarget(target);
       return;
     }
 
     isAnimating.current = true;
-
     const cleanId =
       typeof target === "string" ? target.replace(/^(\/)?#/, "") : null;
 
-    // ── STEP 1: Cover the screen ────────────────────────────────────────────
-    // Force overlay to be visible and fully opaque
-    overlay.style.transition = "none";
-    overlay.style.opacity = "0";
-    overlay.style.display = "block";
-    overlay.style.pointerEvents = "all";
+    // ── Step 1: Make overlay visible and start fade IN ──────────────────────
+    el.style.display = "block";
+    el.style.opacity = "0";
+    el.style.transition = "none";
+    el.style.pointerEvents = "all";
 
-    // Force reflow so "opacity: 0, display: block" is committed
-    void overlay.offsetHeight;
+    // Force browser to paint display:block BEFORE we add the transition
+    void el.offsetHeight;
 
-    // Now animate to fully opaque
-    overlay.style.transition = "opacity 0.38s ease-in";
-    overlay.style.opacity = "1";
+    el.style.transition = "opacity 0.4s ease-in";
+    el.style.opacity = "1";
 
-    // ── STEP 2: After cover completes → scroll ──────────────────────────────
+    // ── Step 2: After fade-in completes → scroll ─────────────────────────────
     setTimeout(() => {
-      // Scroll while screen is completely covered
       scrollToTarget(target);
 
-      // Brief pause for scroll to settle
+      // ── Step 3: Fade OUT to reveal new section ───────────────────────────
       setTimeout(() => {
-        // ── STEP 3: Reveal the new section ───────────────────────────────────
-        overlay.style.transition = "opacity 0.5s ease-out";
-        overlay.style.opacity = "0";
+        el.style.transition = "opacity 0.5s ease-out";
+        el.style.opacity = "0";
 
-        // ── STEP 4: After overlay exits → trigger per-image reveal ───────────
+        // ── Step 4: Hide overlay + trigger per-image reveal ──────────────────
         setTimeout(() => {
-          overlay.style.display = "none";
-          overlay.style.pointerEvents = "none";
+          el.style.display = "none";
+          el.style.pointerEvents = "none";
           isAnimating.current = false;
 
-          if (cleanId) {
-            const section = document.getElementById(cleanId);
-            if (section) {
-              const containers = Array.from(
-                section.querySelectorAll<HTMLElement>(".mask-reveal-container")
-              );
-              // Reset then stagger reveal
-              containers.forEach((c) =>
-                c.classList.remove("revealed", "reveal-delay-1", "reveal-delay-2", "reveal-delay-3")
-              );
-              void section.offsetWidth;
-              containers.forEach((c, i) => {
-                setTimeout(() => {
-                  c.classList.add("revealed");
-                }, i * 150);
-              });
-            }
-          }
+          if (!cleanId) return;
+          const section = document.getElementById(cleanId);
+          if (!section) return;
+
+          const containers = Array.from(
+            section.querySelectorAll<HTMLElement>(".mask-reveal-container")
+          );
+          // Reset first, then stagger reveal
+          containers.forEach((c) =>
+            c.classList.remove("revealed", "reveal-delay-1", "reveal-delay-2", "reveal-delay-3")
+          );
+          void section.offsetWidth;
+          containers.forEach((c, i) => {
+            setTimeout(() => c.classList.add("revealed"), i * 150);
+          });
         }, 520);
       }, 80);
-    }, 420);
-  }, []);
+    }, 430);
+  }
 
   const handleNav = (
     e: React.MouseEvent<HTMLAnchorElement>,
     target: string | number
   ) => {
     e.preventDefault();
-    setIsOpen(false);
-    // Small delay so menu drawer closes first (avoids visual conflict)
-    setTimeout(() => triggerTransition(target), 50);
+    setIsOpen(false);       // close menu drawer
+    runTransition(target);  // start overlay immediately (React re-renders can't touch overlayEl)
   };
 
   const menuDrawer = isOpen ? (
-    <div
-      className="fixed inset-0 z-[9500] flex bg-[#2A281F]/40 backdrop-blur-md"
-    >
+    <div className="fixed inset-0 z-[9500] flex bg-[#2A281F]/40 backdrop-blur-md">
       <div className="w-full max-w-md bg-[#F5F1E9] h-full p-8 md:p-12 flex flex-col justify-between shadow-2xl relative">
         <button
           onClick={() => setIsOpen(false)}
@@ -205,34 +220,8 @@ export default function Navbar() {
         </nav>
       </header>
 
-      {mounted &&
-        createPortal(
-          <>
-            {/*
-              ─── PAGE TRANSITION OVERLAY ───
-              Full-screen solid overlay. Starts hidden (display:none).
-              On nav click: fades in to opacity 1 (covers screen),
-              scroll fires while covered, then fades out (reveals new section).
-            */}
-            <div
-              ref={overlayRef}
-              aria-hidden="true"
-              style={{
-                position: "fixed",
-                inset: 0,
-                zIndex: 9000,
-                display: "none",
-                pointerEvents: "none",
-                opacity: 0,
-                background: "#2A281F",
-              }}
-            />
-
-            {/* Menu drawer sits above overlay */}
-            {menuDrawer}
-          </>,
-          document.body
-        )}
+      {/* Menu drawer portal (z-9500, above the overlay) */}
+      {mounted && menuDrawer ? createPortal(menuDrawer, document.body) : null}
     </>
   );
 }
