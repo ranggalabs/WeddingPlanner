@@ -12,53 +12,41 @@ export default function Navbar() {
     e.preventDefault();
     setIsOpen(false);
 
-    // 1. Get or create fullscreen curtain element
-    let curtain = document.getElementById("nectar-curtain-elem");
-    if (!curtain) {
-      curtain = document.createElement("div");
-      curtain.id = "nectar-curtain-elem";
-      curtain.className = "nectar-mask-curtain";
-      document.body.appendChild(curtain);
-    }
+    // 1. Scroll directly to the destination section
+    scrollToTarget(target);
 
-    // 2. Animate curtain covering screen (Tirai naik menutup)
-    curtain.className = "nectar-mask-curtain entering";
+    // 2. Trigger Clip-Path & Mask Reveal Animations on the target section
+    const cleanId = typeof target === "string" ? target.replace(/^(\/)?#/, "") : null;
+    const targetElement = cleanId ? document.getElementById(cleanId) : null;
 
-    setTimeout(() => {
-      // 3. Scroll to destination under the curtain
-      scrollToTarget(target);
+    if (targetElement) {
+      // Apply section-level polygon clip-path reveal
+      targetElement.classList.remove("section-mask-reveal");
+      void targetElement.offsetWidth;
+      targetElement.classList.add("section-mask-reveal");
 
-      // 4. Trigger polygon clip-path reveal on target element
-      const cleanId = typeof target === "string" ? target.replace(/^(\/)?#/, "") : null;
-      const targetElement = cleanId ? document.getElementById(cleanId) : null;
+      // Apply clip-path polygon reveal on all images inside target section
+      const images = targetElement.querySelectorAll<HTMLImageElement>(".mask-reveal-img, img");
+      images.forEach((img) => {
+        img.classList.remove("is-revealing");
+        img.classList.add("is-wiping");
+        
+        // Force reflow
+        void img.offsetWidth;
 
-      if (targetElement) {
+        setTimeout(() => {
+          img.classList.remove("is-wiping");
+          img.classList.add("is-revealing");
+        }, 80);
+      });
+
+      setTimeout(() => {
         targetElement.classList.remove("section-mask-reveal");
-        void targetElement.offsetWidth;
-        targetElement.classList.add("section-mask-reveal");
-
-        const images = targetElement.querySelectorAll<HTMLImageElement>("img");
         images.forEach((img) => {
-          img.style.clipPath = "polygon(0 0, 0 0, 0 100%, 0 100%)";
-          img.style.transition = "clip-path 1.2s cubic-bezier(0.22, 0.61, 0.36, 1)";
-          setTimeout(() => {
-            img.style.clipPath = "polygon(0 0, 100% 0, 100% 100%, 0 100%)";
-          }, 50);
+          img.classList.remove("is-revealing", "is-wiping");
         });
-
-        setTimeout(() => {
-          targetElement.classList.remove("section-mask-reveal");
-        }, 1500);
-      }
-
-      // 5. Animate curtain uncovering (Tirai tersingkap ke atas/kanan)
-      if (curtain) {
-        curtain.className = "nectar-mask-curtain leaving";
-        setTimeout(() => {
-          if (curtain) curtain.className = "nectar-mask-curtain";
-        }, 750);
-      }
-    }, 450);
+      }, 1400);
+    }
   };
 
   return (

@@ -159,15 +159,20 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
   transition: clip-path 1.2s cubic-bezier(0.22, 0.61, 0.36, 1);
   will-change: clip-path;
 }
 
-/* Revealed State: Gambar Terbuka Penuh dari Kiri ke Kanan */
-.mask-reveal-container.revealed .mask-reveal-img,
-.mask-reveal-img.revealed {
+/* Mask Reveal Transitioning State (Tutup lalu Buka) */
+.mask-reveal-img.is-wiping {
+  clip-path: polygon(0 0, 0 0, 0 100%, 0 100%) !important;
+  transition: none !important;
+}
+
+.mask-reveal-img.is-revealing {
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%) !important;
+  transition: clip-path 1.2s cubic-bezier(0.22, 0.61, 0.36, 1) !important;
 }
 
 /* Fullscreen Nectar Mask Wipe Overlay (Tirai Transparan) */

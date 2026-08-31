@@ -86,12 +86,12 @@ export default function PhotoGrid({ photos, enableParallax = true }: PhotoGridPr
           className="venue-card-item reveal-item aspect-[3/4] min-h-[260px] sm:min-h-[300px] md:min-h-[340px] lg:min-h-[360px] rounded-3xl bg-[#EDEAE3] relative group cursor-pointer overflow-hidden shadow-xl border border-[#EDEAE3] transition-all duration-500 block hover:-translate-y-2 hover:shadow-[0_30px_60px_-15px_rgba(42,40,31,0.25)]"
           style={{ transitionDelay: `${index * 80}ms` }}
         >
-          {/* Inner Parallax Image */}
-          <div className="absolute inset-0 overflow-hidden w-full h-full">
+          {/* Inner Parallax Image & Mask Reveal Container */}
+          <div className="mask-reveal-container absolute inset-0 overflow-hidden w-full h-full">
             <img
               src={photo.src}
               alt={photo.alt}
-              className="inner-parallax-image w-full h-[130%] -top-[15%] relative object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+              className="mask-reveal-img inner-parallax-image w-full h-[130%] -top-[15%] relative object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
               loading="lazy"
             />
           </div>

@@ -71,8 +71,8 @@ export default function PackageCard({
       } ${className}`}
     >
       <div>
-        {/* Header Photo Container with Inner Parallax */}
-        <div className="w-full h-24 sm:h-28 lg:h-32 rounded-xl overflow-hidden relative mb-2.5 sm:mb-3 bg-[#EDEAE3]">
+        {/* Header Photo Container with Inner Parallax & Mask Reveal */}
+        <div className="mask-reveal-container w-full h-24 sm:h-28 lg:h-32 rounded-xl overflow-hidden relative mb-2.5 sm:mb-3 bg-[#EDEAE3]">
           {/* Status Badge */}
           {isDark ? (
             <span className="absolute top-2 right-2 z-10 bg-white text-[#2A281F] text-[8px] sm:text-[9px] uppercase tracking-widest font-semibold px-2 py-0.5 rounded-full shadow-md">
@@ -88,7 +88,7 @@ export default function PackageCard({
             ref={imgRef}
             src={pkg.imageSrc}
             alt={pkg.imageAlt}
-            className="w-full h-[125%] -top-[12.5%] relative object-cover rounded-xl group-hover:scale-105 transition-transform duration-700 ease-out"
+            className="mask-reveal-img w-full h-[125%] -top-[12.5%] relative object-cover rounded-xl group-hover:scale-105 transition-transform duration-700 ease-out"
             loading="lazy"
           />
         </div>

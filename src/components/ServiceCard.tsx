@@ -25,20 +25,20 @@ export default function ServiceCard({ service, className = "", style }: ServiceC
       style={style}
       className={`group bg-white rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 md:p-5 border border-[#EDEAE3] shadow-md flex flex-col justify-between transition-all duration-500 w-full hover:shadow-xl ${className}`}
     >
-      {/* Top Section: Photo */}
-      <div className="w-full h-28 sm:h-32 md:h-36 relative rounded-xl sm:rounded-2xl overflow-hidden bg-[#EDEAE3] mb-2.5 sm:mb-3 shadow-sm">
+      {/* Top Section: Photo with Mask Reveal */}
+      <div className="mask-reveal-container w-full h-28 sm:h-32 md:h-36 relative rounded-xl sm:rounded-2xl overflow-hidden bg-[#EDEAE3] mb-2.5 sm:mb-3 shadow-sm">
         {/* Floating Editorial Badge on Photo */}
         <span className="absolute top-2 left-2 sm:top-2.5 sm:left-2.5 z-10 px-2.5 py-0.5 rounded-full bg-[#2A281F]/75 backdrop-blur-md text-white text-[8px] sm:text-[9px] uppercase tracking-widest font-semibold border border-white/20 shadow-md pointer-events-none">
           {service.tag}
         </span>
 
-        {/* Background Image: smooth scale(1.12) zoom on card hover */}
+        {/* Background Image: smooth scale(1.12) zoom on card hover & mask reveal */}
         <img
           src={service.imageSrc}
           alt={service.imageAlt}
           width={768}
           height={1024}
-          className="w-full h-full object-cover object-center rounded-xl sm:rounded-2xl transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.12]"
+          className="mask-reveal-img w-full h-full object-cover object-center rounded-xl sm:rounded-2xl transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.12]"
           loading="lazy"
         />
       </div>
