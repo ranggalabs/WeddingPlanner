@@ -18,7 +18,7 @@ export default function Hero() {
 
     const ctx = gsap.context(() => {
       gsap.to(imgRef.current, {
-        yPercent: 25, // Deep Background photo moves at ~0.5x speed creating depth
+        yPercent: 20, // Deep Background photo moves smoothly creating depth
         ease: "none",
         scrollTrigger: {
           trigger: heroRef.current,
@@ -35,7 +35,7 @@ export default function Hero() {
   return (
     <section
       ref={heroRef}
-      className="relative w-full flex-1 min-h-[540px] sm:min-h-[580px] flex items-end justify-center overflow-hidden pb-6 sm:pb-10"
+      className="relative w-full flex-1 min-h-[500px] sm:min-h-[540px] flex items-center justify-center overflow-hidden pt-16 sm:pt-20 pb-4 sm:pb-6"
     >
       {/* Deep Background Layer: Hero Image with Mask Reveal */}
       <div className="mask-reveal-container absolute inset-0 z-0 overflow-hidden">
@@ -49,31 +49,31 @@ export default function Hero() {
         <div className="absolute inset-0 hero-scrim z-10" />
       </div>
 
-      {/* Base & Fore Layer Content */}
-      <div className="relative z-20 w-full max-w-5xl mx-auto px-6 pb-4 sm:pb-8 text-white flex flex-col items-center text-center">
-        <ParallaxLayer depth="fore" yDistance={25} className="mb-3">
-          <p className="text-[11px] sm:text-xs uppercase tracking-[0.25em] text-white/80 font-medium px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 inline-block">
+      {/* Base & Fore Layer Content (Unified, cohesive text flow) */}
+      <div className="relative z-20 w-full max-w-4xl mx-auto px-6 text-white flex flex-col items-center text-center my-auto">
+        <div className="mb-2.5 sm:mb-3">
+          <p className="text-[10px] sm:text-xs uppercase tracking-[0.25em] text-white/85 font-medium px-3.5 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 inline-block shadow-sm">
             Luxury Destination Wedding Organizer
           </p>
-        </ParallaxLayer>
+        </div>
 
-        <h1 className="font-libre-caslon text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-normal leading-[1.1] max-w-4xl mb-4 sm:mb-6 drop-shadow-sm">
+        <h1 className="font-libre-caslon text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-normal leading-[1.15] max-w-3xl mb-3 sm:mb-4 drop-shadow-md">
           Bali bukan sekadar lokasi, tapi cerita yang akan diingat.
         </h1>
 
-        <p className="text-xs sm:text-sm md:text-base text-white/90 max-w-2xl font-light leading-relaxed mb-6 sm:mb-8">
+        <p className="text-xs sm:text-sm md:text-base text-white/90 max-w-xl font-light leading-relaxed mb-4 sm:mb-6">
           Mengkurasi pernikahan impian di tebing Uluwatu, ketenangan Ubud, hingga pesisir pantai Nusa Dua dengan pendekatan modern editorial.
         </p>
 
-        <ParallaxLayer depth="fore" yDistance={35}>
+        <div>
           <Link
             href="/#intro-section"
-            className="flex items-center space-x-2 text-xs uppercase tracking-widest text-white/90 hover:text-white transition-opacity group cursor-pointer"
+            className="inline-flex items-center space-x-2 text-[11px] sm:text-xs uppercase tracking-widest text-white/90 hover:text-white transition-all group cursor-pointer border border-white/20 bg-white/10 backdrop-blur-sm px-4 py-1.5 rounded-full hover:bg-white/20 shadow-sm"
           >
             <span>Jelajahi Pengalaman</span>
-            <ArrowDown size={14} className="group-hover:translate-y-1 transition-transform" />
+            <ArrowDown size={13} className="group-hover:translate-y-1 transition-transform" />
           </Link>
-        </ParallaxLayer>
+        </div>
       </div>
     </section>
   );
