@@ -16,7 +16,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="fixed top-5 left-0 right-0 z-50 flex justify-center px-4">
+      <header className="absolute top-5 left-0 right-0 z-20 flex justify-center px-4">
         <nav className="glass-nav rounded-full px-5 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between w-full max-w-4xl shadow-sm transition-all duration-300">
           {/* Left: Menu Button */}
           <button

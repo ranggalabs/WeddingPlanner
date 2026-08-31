@@ -206,11 +206,9 @@ const testimonials: TestimonialItem[] = [
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#2A281F] text-[#2A281F] relative">
-      {/* 1. Navbar (Glass, Fixed) */}
-      <Navbar />
-
-      {/* Section 1: Hero & Teaser (Layer 1: Sticky Base Screen) */}
-      <div className="sticky top-0 z-10 w-full min-h-screen flex flex-col justify-between overflow-hidden">
+      {/* Section 1: Hero & Teaser with Navbar (Layer 1: Sticky Base Screen) */}
+      <div className="sticky top-0 z-10 w-full min-h-screen flex flex-col justify-between overflow-hidden relative">
+        <Navbar />
         <Hero />
         <PriceTeaserStrip />
       </div>
