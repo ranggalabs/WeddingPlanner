@@ -86,26 +86,26 @@ export default function TestimonialCarousel({ testimonials }: TestimonialCarouse
         {testimonials.map((item) => (
           <div
             key={item.id}
-            className="flex-none w-[290px] sm:w-[360px] md:w-[400px] snap-start bg-white rounded-3xl p-6 sm:p-8 md:p-9 border border-[#EDEAE3] shadow-xl flex flex-col justify-between"
+            className="flex-none w-[270px] sm:w-[320px] md:w-[360px] snap-start bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 border border-[#EDEAE3] shadow-md flex flex-col justify-between"
           >
             <div>
-              <Quote size={28} className="text-[#8A8477]/30 mb-4" />
-              <p className="font-libre-caslon text-base sm:text-lg md:text-xl text-[#2A281F] font-normal leading-relaxed mb-6 italic">
+              <Quote size={22} className="text-[#8A8477]/30 mb-2.5" />
+              <p className="font-libre-caslon text-xs sm:text-sm md:text-base text-[#2A281F] font-normal leading-relaxed mb-4 italic line-clamp-4">
                 "{item.quote}"
               </p>
             </div>
 
-            <div className="flex items-center space-x-4 pt-5 border-t border-[#EDEAE3]">
+            <div className="flex items-center space-x-3 pt-3 border-t border-[#EDEAE3]">
               <img
                 src={item.avatar}
                 alt={item.coupleName}
-                className="w-12 h-12 rounded-full object-cover border border-[#EDEAE3]"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover border border-[#EDEAE3]"
               />
               <div>
-                <h4 className="font-libre-caslon text-sm sm:text-base font-medium text-[#2A281F]">
+                <h4 className="font-libre-caslon text-xs sm:text-sm font-medium text-[#2A281F]">
                   {item.coupleName}
                 </h4>
-                <p className="text-[10px] sm:text-[11px] uppercase tracking-wider text-[#8A8477]">
+                <p className="text-[9px] sm:text-[10px] uppercase tracking-wider text-[#8A8477]">
                   {item.locationYear}
                 </p>
               </div>
