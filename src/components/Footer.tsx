@@ -11,7 +11,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0 z-0 bg-[#2A281F] text-white pt-16 pb-12 px-6 min-h-[380px] flex flex-col justify-between overflow-hidden">
+    <footer className="relative z-[80] w-full bg-[#2A281F] text-white pt-16 pb-12 px-6 min-h-[380px] flex flex-col justify-between overflow-hidden shadow-[0_-30px_60px_rgba(0,0,0,0.3)]">
       {/* Deep Background Monogram Watermark */}
       <ParallaxLayer depth="deep" yDistance={40} className="absolute -bottom-8 right-0 pointer-events-none select-none opacity-[0.03] z-0 whitespace-nowrap">
         <span className="font-libre-caslon text-[140px] md:text-[220px] leading-none text-white font-normal">

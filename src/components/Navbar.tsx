@@ -1,12 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import { scrollToTarget } from "@/lib/scrollTo";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    const handleScroll = () => {
+      if (isOpen) setIsOpen(false);
+    };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsOpen(false);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen]);
 
   const handleNav = (e: React.MouseEvent<HTMLAnchorElement>, target: string | number) => {
     e.preventDefault();
@@ -49,57 +69,23 @@ export default function Navbar() {
     }
   };
 
-  return (
-    <>
-      <header className="absolute top-5 left-0 right-0 z-20 flex justify-center px-4">
-        <nav className="glass-nav rounded-full px-5 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between w-full max-w-4xl shadow-sm transition-all duration-300">
-          {/* Left: Menu Button */}
-          <button
-            onClick={() => setIsOpen(true)}
-            className="flex items-center space-x-2 text-xs uppercase tracking-widest text-[#2A281F] font-medium hover:opacity-70 transition-opacity cursor-pointer py-1"
-          >
-            <Menu size={16} />
-            <span>Menu</span>
-          </button>
+  const menuModal = isOpen ? (
+    <div className="fixed inset-0 z-[100] flex bg-[#2A281F]/40 backdrop-blur-md animate-fade-in">
+      <div className="w-full max-w-md bg-[#F5F1E9] h-full p-8 md:p-12 flex flex-col justify-between shadow-2xl relative">
+        <button
+          onClick={() => setIsOpen(false)}
+          className="absolute top-6 right-6 p-2 text-[#2A281F] hover:opacity-70 transition-opacity cursor-pointer"
+          aria-label="Close menu"
+        >
+          <X size={24} />
+        </button>
 
-          {/* Center Logo */}
-          <a
-            href="/"
-            onClick={(e) => handleNav(e, 0)}
-            className="font-libre-caslon text-lg md:text-xl font-medium tracking-tight text-[#2A281F] cursor-pointer"
-          >
-            BALI WED
-          </a>
+        <div>
+          <p className="text-xs uppercase tracking-widest text-[#8A8477] mb-8 font-medium">
+            Bali Wed — Navigasi Halaman
+          </p>
 
-          {/* Right: Konsultasi CTA */}
-          <a
-            href="/#kontak-section"
-            onClick={(e) => handleNav(e, "kontak-section")}
-            className="inline-flex text-xs uppercase tracking-wider font-semibold text-[#2A281F] border border-[#2A281F]/30 rounded-full px-4 py-1.5 hover:bg-[#2A281F] hover:text-white transition-colors cursor-pointer"
-          >
-            Konsultasi
-          </a>
-        </nav>
-      </header>
-
-      {/* Slide-out Menu Overlay (Chronological Editorial Order 01 to 07) */}
-      {isOpen && (
-        <div className="fixed inset-0 z-50 flex bg-[#2A281F]/40 backdrop-blur-md animate-fade-in">
-          <div className="w-full max-w-md bg-[#F5F1E9] h-full p-8 md:p-12 flex flex-col justify-between shadow-2xl relative">
-            <button
-              onClick={() => setIsOpen(false)}
-              className="absolute top-6 right-6 p-2 text-[#2A281F] hover:opacity-70 transition-opacity cursor-pointer"
-              aria-label="Close menu"
-            >
-              <X size={24} />
-            </button>
-
-            <div>
-              <p className="text-xs uppercase tracking-widest text-[#8A8477] mb-8 font-medium">
-                Bali Wed — Navigasi Halaman
-              </p>
-
-              <ul className="space-y-4 sm:space-y-5">
+          <ul className="space-y-4 sm:space-y-5">
                 <li>
                   <a
                     href="/"
@@ -205,7 +191,43 @@ export default function Navbar() {
 
           <div className="flex-1" onClick={() => setIsOpen(false)} />
         </div>
-      )}
+      ) : null;
+
+  return (
+    <>
+      <header className="absolute top-5 left-0 right-0 z-20 flex justify-center px-4">
+        <nav className="glass-nav rounded-full px-5 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between w-full max-w-4xl shadow-sm transition-all duration-300">
+          {/* Left: Menu Button */}
+          <button
+            onClick={() => setIsOpen(true)}
+            className="flex items-center space-x-2 text-xs uppercase tracking-widest text-[#2A281F] font-medium hover:opacity-70 transition-opacity cursor-pointer py-1"
+          >
+            <Menu size={16} />
+            <span>Menu</span>
+          </button>
+
+          {/* Center Logo */}
+          <a
+            href="/"
+            onClick={(e) => handleNav(e, 0)}
+            className="font-libre-caslon text-lg md:text-xl font-medium tracking-tight text-[#2A281F] cursor-pointer"
+          >
+            BALI WED
+          </a>
+
+          {/* Right: Konsultasi CTA */}
+          <a
+            href="/#kontak-section"
+            onClick={(e) => handleNav(e, "kontak-section")}
+            className="inline-flex text-xs uppercase tracking-wider font-semibold text-[#2A281F] border border-[#2A281F]/30 rounded-full px-4 py-1.5 hover:bg-[#2A281F] hover:text-white transition-colors cursor-pointer"
+          >
+            Konsultasi
+          </a>
+        </nav>
+      </header>
+
+      {/* Render Slide-out Drawer into document.body with Top-Level Portal (z-[100]) */}
+      {mounted && menuModal ? createPortal(menuModal, document.body) : null}
     </>
   );
 }
