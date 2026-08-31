@@ -22,7 +22,7 @@ export default function ContactFormSection() {
   return (
     <section
       id="kontak-section"
-      className="sticky top-0 z-[70] w-full min-h-screen bg-[#F5F1E9] curtain-shadow-top curtain-shadow-bottom shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] pt-16 sm:pt-20 md:pt-24 pb-28 sm:pb-36 md:pb-44 px-4 sm:px-6 md:px-8 flex flex-col justify-center overflow-hidden mb-[380px]"
+      className="sticky top-0 z-[70] w-full min-h-screen bg-[#F5F1E9] curtain-shadow-top curtain-shadow-bottom shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] py-10 sm:py-14 md:py-16 px-4 sm:px-6 md:px-8 flex flex-col justify-center mb-[340px] sm:mb-[360px]"
     >
       <div className="max-w-4xl mx-auto w-full">
         <SectionHeading
@@ -31,11 +31,11 @@ export default function ContactFormSection() {
           description="Tim concierge kami akan menghubungi Anda dalam waktu 24 jam untuk diskusi privat mengenai lokasi, konsep, dan estimasi investasi."
         />
 
-        <div className="bg-white rounded-3xl p-6 sm:p-7 md:p-8 border border-[#EDEAE3] shadow-xl">
+        <div className="bg-white rounded-3xl p-5 sm:p-6 md:p-7 border border-[#EDEAE3] shadow-xl">
           {submitted ? (
-            <div className="text-center py-8 space-y-3">
-              <CheckCircle2 size={40} className="mx-auto text-[#2A281F]" />
-              <h3 className="font-libre-caslon text-xl sm:text-2xl text-[#2A281F]">
+            <div className="text-center py-6 sm:py-8 space-y-3">
+              <CheckCircle2 size={36} className="mx-auto text-[#2A281F]" />
+              <h3 className="font-libre-caslon text-lg sm:text-xl md:text-2xl text-[#2A281F]">
                 Terima Kasih, Pesan Anda Telah Terkirim.
               </h3>
               <p className="text-xs sm:text-sm text-[#8A8477] max-w-md mx-auto font-light">
@@ -50,7 +50,7 @@ export default function ContactFormSection() {
               </button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-3.5">
               {/* Full Name */}
               <div>
                 <label className="block text-[10px] sm:text-[11px] uppercase tracking-wider text-[#2A281F] font-semibold mb-1">

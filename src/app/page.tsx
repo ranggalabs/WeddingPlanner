@@ -1,8 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import PriceTeaserStrip from "@/components/PriceTeaserStrip";
@@ -207,30 +204,13 @@ const testimonials: TestimonialItem[] = [
 ];
 
 export default function Home() {
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
-    // Continuous Curtain Sheet Stacking Scroll from Layanan into Paket
-    const pinTrigger = ScrollTrigger.create({
-      trigger: "#paket",
-      start: "top bottom",
-      end: "top top",
-      pin: "#layanan",
-      pinSpacing: false,
-    });
-
-    return () => {
-      pinTrigger.kill();
-    };
-  }, []);
-
   return (
     <main className="min-h-screen bg-[#2A281F] text-[#2A281F] relative">
       {/* 1. Navbar (Glass, Fixed) */}
       <Navbar />
 
       {/* Section 1: Hero & Teaser (Layer 1: Sticky Base Screen) */}
-      <div className="sticky top-0 z-10 w-full min-h-screen h-screen flex flex-col justify-between overflow-hidden">
+      <div className="sticky top-0 z-10 w-full min-h-screen flex flex-col justify-between overflow-hidden">
         <Hero />
         <PriceTeaserStrip />
       </div>
@@ -238,9 +218,9 @@ export default function Home() {
       {/* Section 2: Intro & Photo Ticker (Layer 2: Curtain Sheet 1) */}
       <section
         id="intro-section"
-        className="sticky top-0 z-20 w-full min-h-screen bg-white curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] pt-16 sm:pt-20 md:pt-24 pb-24 sm:pb-28 md:pb-36 flex flex-col justify-center overflow-hidden"
+        className="sticky top-0 z-20 w-full min-h-screen bg-white curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] py-12 sm:py-16 md:py-20 lg:py-24 flex flex-col justify-center overflow-hidden"
       >
-        <div className="px-4 sm:px-6 md:px-8 max-w-7xl mx-auto mb-8 sm:mb-10 w-full">
+        <div className="px-4 sm:px-6 md:px-8 max-w-7xl mx-auto mb-6 sm:mb-8 md:mb-10 w-full">
           <SectionHeading
             subtitle="KENAPA BALI"
             title="Setiap Pernikahan Punya Cerita Sendiri"
@@ -252,13 +232,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Section 3: Layanan Utama (Layer 3: Card 1 di atas, Card 2 di bawahnya dengan Continuous Curtain Pinning) */}
+      {/* Section 3: Layanan Utama (Layer 3: Editorial Service Cards) */}
       <section
         id="layanan"
-        className="relative z-30 bg-[#F5F1E9] curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] pt-16 sm:pt-20 md:pt-24 pb-28 sm:pb-36 md:pb-44 px-4 sm:px-6 md:px-8 overflow-hidden"
+        className="relative z-30 bg-[#F5F1E9] curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-8 overflow-hidden"
       >
         <div className="max-w-6xl mx-auto w-full">
-          <div className="mb-10 sm:mb-14">
+          <div className="mb-8 sm:mb-10 md:mb-12">
             <SectionHeading
               subtitle="KELEBIHAN LAYANAN"
               title="Pendekatan Editorial Dalam Setiap Detail"
@@ -267,17 +247,17 @@ export default function Home() {
           </div>
 
           {/* Card 1 di atas, Card 2 di bawahnya */}
-          <div className="flex flex-col gap-10 sm:gap-14 md:gap-16 w-full">
+          <div className="flex flex-col gap-8 sm:gap-10 md:gap-12 w-full">
             <ServiceCard service={services[0]} className="shadow-2xl w-full" />
             <ServiceCard service={services[1]} className="shadow-2xl w-full" />
           </div>
         </div>
       </section>
 
-      {/* Section 4: Paket Layanan (Layer 4: Curtain Sheet 3 — Meluncur naik menutupi Section Layanan dari bawah) */}
+      {/* Section 4: Paket Layanan (Layer 4: Curtain Sheet 3) */}
       <section
         id="paket"
-        className="sticky top-0 z-40 w-full min-h-screen bg-white curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] pt-16 sm:pt-20 md:pt-24 pb-24 sm:pb-28 md:pb-36 px-4 sm:px-6 md:px-8 flex flex-col justify-center overflow-hidden"
+        className="sticky top-0 z-40 w-full min-h-screen bg-white curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] py-10 sm:py-14 md:py-16 lg:py-20 px-4 sm:px-6 md:px-8 flex flex-col justify-center"
       >
         <div className="max-w-7xl mx-auto w-full">
           <SectionHeading
@@ -293,10 +273,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Section 5: Venue Wedding (Layer 5: Curtain Sheet 4 — Meluncur naik menutupi Section Paket) */}
+      {/* Section 5: Venue Wedding (Layer 5: Curtain Sheet 4) */}
       <section
         id="venue"
-        className="sticky top-0 z-50 w-full min-h-screen bg-[#F5F1E9] curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] pt-16 sm:pt-20 md:pt-24 pb-24 sm:pb-28 md:pb-36 px-4 sm:px-6 md:px-8 flex flex-col justify-center overflow-hidden"
+        className="sticky top-0 z-50 w-full min-h-screen bg-[#F5F1E9] curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] py-10 sm:py-14 md:py-16 lg:py-20 px-4 sm:px-6 md:px-8 flex flex-col justify-center"
       >
         <div className="max-w-7xl mx-auto w-full">
           <SectionHeading
@@ -308,10 +288,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Section 6: Testimoni Pasangan (Layer 6: Curtain Sheet 5 — Meluncur naik menutupi Section Venue) */}
+      {/* Section 6: Testimoni Pasangan (Layer 6: Curtain Sheet 5) */}
       <section
         id="testimoni"
-        className="sticky top-0 z-[60] w-full min-h-screen bg-white curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] pt-16 sm:pt-20 md:pt-24 pb-24 sm:pb-28 md:pb-36 px-4 sm:px-6 md:px-8 flex flex-col justify-center overflow-hidden"
+        className="sticky top-0 z-[60] w-full min-h-screen bg-white curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-8 flex flex-col justify-center overflow-hidden"
       >
         <div className="max-w-6xl mx-auto w-full">
           <SectionHeading

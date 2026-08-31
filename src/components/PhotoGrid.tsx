@@ -83,7 +83,7 @@ export default function PhotoGrid({ photos, enableParallax = true }: PhotoGridPr
         <Link
           key={photo.id}
           href="/#kontak-section"
-          className="venue-card-item reveal-item aspect-[3/4] min-h-[320px] sm:min-h-[360px] lg:min-h-[380px] rounded-3xl bg-[#EDEAE3] relative group cursor-pointer overflow-hidden shadow-xl border border-[#EDEAE3] transition-all duration-500 block hover:-translate-y-2 hover:shadow-[0_30px_60px_-15px_rgba(42,40,31,0.25)]"
+          className="venue-card-item reveal-item aspect-[3/4] min-h-[260px] sm:min-h-[300px] md:min-h-[340px] lg:min-h-[360px] rounded-3xl bg-[#EDEAE3] relative group cursor-pointer overflow-hidden shadow-xl border border-[#EDEAE3] transition-all duration-500 block hover:-translate-y-2 hover:shadow-[0_30px_60px_-15px_rgba(42,40,31,0.25)]"
           style={{ transitionDelay: `${index * 80}ms` }}
         >
           {/* Inner Parallax Image */}
