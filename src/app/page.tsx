@@ -218,9 +218,9 @@ export default function Home() {
       {/* Section 2: Intro & Photo Ticker (Layer 2: Curtain Sheet 1) */}
       <section
         id="intro-section"
-        className="sticky top-0 z-20 w-full min-h-screen bg-white curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] pt-16 sm:pt-20 md:pt-24 pb-28 sm:pb-36 md:pb-44 flex flex-col justify-start sm:justify-center overflow-hidden"
+        className="sticky top-0 z-20 w-full min-h-screen bg-white curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] pt-10 sm:pt-14 md:pt-16 pb-16 sm:pb-20 md:pb-24 flex flex-col justify-start sm:justify-center overflow-hidden"
       >
-        <div className="px-4 sm:px-6 md:px-8 max-w-7xl mx-auto mb-6 sm:mb-8 md:mb-10 w-full">
+        <div className="px-4 sm:px-6 md:px-8 max-w-7xl mx-auto mb-4 sm:mb-6 md:mb-8 w-full">
           <SectionHeading
             subtitle="KENAPA BALI"
             title="Setiap Pernikahan Punya Cerita Sendiri"
@@ -235,10 +235,10 @@ export default function Home() {
       {/* Section 3: Layanan Utama (Layer 3: Curtain Sheet 2 - Generous Clearance for Card 1 & 2) */}
       <section
         id="layanan"
-        className="sticky top-0 z-30 w-full min-h-screen bg-[#F5F1E9] curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] pt-16 sm:pt-20 md:pt-24 pb-36 sm:pb-44 md:pb-56 px-4 sm:px-6 md:px-8 flex flex-col justify-start"
+        className="sticky top-0 z-30 w-full min-h-screen bg-[#F5F1E9] curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] pt-12 sm:pt-16 md:pt-20 pb-24 sm:pb-28 md:pb-36 px-4 sm:px-6 md:px-8 flex flex-col justify-start"
       >
         <div className="max-w-6xl mx-auto w-full">
-          <div className="mb-6 sm:mb-8 md:mb-10">
+          <div className="mb-4 sm:mb-6 md:mb-8">
             <SectionHeading
               subtitle="KELEBIHAN LAYANAN"
               title="Pendekatan Editorial Dalam Setiap Detail"
@@ -247,7 +247,7 @@ export default function Home() {
           </div>
 
           {/* Service Cards Grid / Stack */}
-          <div className="flex flex-col gap-8 sm:gap-10 md:gap-12 w-full">
+          <div className="flex flex-col gap-6 sm:gap-8 md:gap-10 w-full">
             <ServiceCard service={services[0]} className="shadow-xl w-full" />
             <ServiceCard service={services[1]} className="shadow-xl w-full" />
           </div>
@@ -257,7 +257,7 @@ export default function Home() {
       {/* Section 4: Paket Layanan (Layer 4: Curtain Sheet 3 - Generous Clearance for All Cards & CTAs) */}
       <section
         id="paket"
-        className="sticky top-0 z-40 w-full min-h-screen bg-white curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] pt-16 sm:pt-20 md:pt-24 pb-32 sm:pb-40 md:pb-48 px-4 sm:px-6 md:px-8 flex flex-col justify-start sm:justify-center"
+        className="sticky top-0 z-40 w-full min-h-screen bg-white curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] pt-10 sm:pt-14 md:pt-16 pb-20 sm:pb-24 md:pb-28 px-4 sm:px-6 md:px-8 flex flex-col justify-start sm:justify-center"
       >
         <div className="max-w-7xl mx-auto w-full">
           <SectionHeading
@@ -276,7 +276,7 @@ export default function Home() {
       {/* Section 5: Venue Wedding (Layer 5: Curtain Sheet 4 - Generous Clearance for 3:4 Portrait Grid) */}
       <section
         id="venue"
-        className="sticky top-0 z-50 w-full min-h-screen bg-[#F5F1E9] curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] pt-16 sm:pt-20 md:pt-24 pb-32 sm:pb-40 md:pb-48 px-4 sm:px-6 md:px-8 flex flex-col justify-start sm:justify-center"
+        className="sticky top-0 z-50 w-full min-h-screen bg-[#F5F1E9] curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] pt-10 sm:pt-14 md:pt-16 pb-20 sm:pb-24 md:pb-28 px-4 sm:px-6 md:px-8 flex flex-col justify-start sm:justify-center"
       >
         <div className="max-w-7xl mx-auto w-full">
           <SectionHeading
@@ -291,7 +291,7 @@ export default function Home() {
       {/* Section 6: Testimoni Pasangan (Layer 6: Curtain Sheet 5 - Generous Clearance for Reviews) */}
       <section
         id="testimoni"
-        className="sticky top-0 z-[60] w-full min-h-screen bg-white curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] pt-16 sm:pt-20 md:pt-24 pb-28 sm:pb-36 md:pb-44 px-4 sm:px-6 md:px-8 flex flex-col justify-start sm:justify-center"
+        className="sticky top-0 z-[60] w-full min-h-screen bg-white curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] pt-10 sm:pt-14 md:pt-16 pb-20 sm:pb-24 md:pb-28 px-4 sm:px-6 md:px-8 flex flex-col justify-start sm:justify-center"
       >
         <div className="max-w-6xl mx-auto w-full">
           <SectionHeading

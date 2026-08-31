@@ -84,7 +84,7 @@ export default function PhotoTicker({ photos }: PhotoTickerProps) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onMouseMove={handleMouseMove}
-      className="relative w-full overflow-hidden select-none group cursor-grab active:cursor-grabbing py-6 bg-[#F5F1E9]/30 border-y border-[#EDEAE3]"
+      className="relative w-full overflow-hidden select-none group cursor-grab active:cursor-grabbing py-3 sm:py-4 bg-[#F5F1E9]/30 border-y border-[#EDEAE3]"
     >
       {/* Custom Drag Floating Cursor Indicator */}
       {isHovered && (
@@ -103,11 +103,11 @@ export default function PhotoTicker({ photos }: PhotoTickerProps) {
 
       {/* Embla Viewport */}
       <div className="overflow-hidden w-full" ref={emblaRef}>
-        <div className="flex gap-8 md:gap-12">
+        <div className="flex gap-6 sm:gap-8 md:gap-10">
           {displayPhotos.map((photo, index) => (
             <div
               key={`${photo.id}-${index}`}
-              className="flex-none mr-8 md:mr-12 h-[260px] min-[690px]:h-[42vh] min-[1000px]:h-[50vh] photo-zoom-container rounded-2xl overflow-hidden bg-[#EDEAE3] relative group/item shadow-md border border-[#EDEAE3]"
+              className="flex-none mr-6 sm:mr-8 md:mr-10 h-[200px] sm:h-[240px] md:h-[270px] lg:h-[300px] xl:h-[330px] photo-zoom-container rounded-2xl overflow-hidden bg-[#EDEAE3] relative group/item shadow-md border border-[#EDEAE3]"
             >
               <img
                 src={photo.src}
