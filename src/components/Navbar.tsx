@@ -1,14 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import Link from "next/link";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import { scrollToTarget } from "@/lib/scrollTo";
+import MaskRevealCurtain, { type MaskRevealCurtainHandle } from "@/components/MaskRevealCurtain";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const curtainRef = useRef<MaskRevealCurtainHandle>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -28,44 +29,22 @@ export default function Navbar() {
     };
   }, [isOpen]);
 
-  const handleNav = (e: React.MouseEvent<HTMLAnchorElement>, target: string | number) => {
+  const handleNav = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    target: string | number
+  ) => {
     e.preventDefault();
     setIsOpen(false);
 
-    // 1. Scroll directly to the destination section
-    scrollToTarget(target);
-
-    // 2. Trigger Clip-Path & Mask Reveal Animations on the target section
-    const cleanId = typeof target === "string" ? target.replace(/^(\/)?#/, "") : null;
-    const targetElement = cleanId ? document.getElementById(cleanId) : null;
-
-    if (targetElement) {
-      // Apply section-level polygon clip-path reveal
-      targetElement.classList.remove("section-mask-reveal");
-      void targetElement.offsetWidth;
-      targetElement.classList.add("section-mask-reveal");
-
-      // Apply clip-path polygon reveal on all images inside target section
-      const images = targetElement.querySelectorAll<HTMLImageElement>(".mask-reveal-img, img");
-      images.forEach((img) => {
-        img.classList.remove("is-revealing");
-        img.classList.add("is-wiping");
-        
-        // Force reflow
-        void img.offsetWidth;
-
-        setTimeout(() => {
-          img.classList.remove("is-wiping");
-          img.classList.add("is-revealing");
-        }, 80);
+    if (curtainRef.current) {
+      // Trigger the clip-path curtain wipe animation:
+      // curtain sweeps IN → scroll happens while hidden → curtain sweeps OUT (reveals new section)
+      curtainRef.current.trigger(() => {
+        scrollToTarget(target);
       });
-
-      setTimeout(() => {
-        targetElement.classList.remove("section-mask-reveal");
-        images.forEach((img) => {
-          img.classList.remove("is-revealing", "is-wiping");
-        });
-      }, 1400);
+    } else {
+      // Fallback: direct scroll if curtain not mounted yet
+      scrollToTarget(target);
     }
   };
 
@@ -86,112 +65,112 @@ export default function Navbar() {
           </p>
 
           <ul className="space-y-4 sm:space-y-5">
-                <li>
-                  <a
-                    href="/"
-                    onClick={(e) => handleNav(e, 0)}
-                    className="font-libre-caslon text-2xl sm:text-3xl text-[#2A281F] hover:translate-x-2 transition-transform inline-flex items-baseline space-x-3 group cursor-pointer"
-                  >
-                    <span className="text-xs font-sans uppercase tracking-widest text-[#8A8477] group-hover:text-[#2A281F]">
-                      01.
-                    </span>
-                    <span>Beranda</span>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/#intro-section"
-                    onClick={(e) => handleNav(e, "intro-section")}
-                    className="font-libre-caslon text-2xl sm:text-3xl text-[#2A281F] hover:translate-x-2 transition-transform inline-flex items-baseline space-x-3 group cursor-pointer"
-                  >
-                    <span className="text-xs font-sans uppercase tracking-widest text-[#8A8477] group-hover:text-[#2A281F]">
-                      02.
-                    </span>
-                    <span>Kenapa Bali</span>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/#layanan"
-                    onClick={(e) => handleNav(e, "layanan")}
-                    className="font-libre-caslon text-2xl sm:text-3xl text-[#2A281F] hover:translate-x-2 transition-transform inline-flex items-baseline space-x-3 group cursor-pointer"
-                  >
-                    <span className="text-xs font-sans uppercase tracking-widest text-[#8A8477] group-hover:text-[#2A281F]">
-                      03.
-                    </span>
-                    <span>Layanan Utama</span>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/#paket"
-                    onClick={(e) => handleNav(e, "paket")}
-                    className="font-libre-caslon text-2xl sm:text-3xl text-[#2A281F] hover:translate-x-2 transition-transform inline-flex items-baseline space-x-3 group cursor-pointer"
-                  >
-                    <span className="text-xs font-sans uppercase tracking-widest text-[#8A8477] group-hover:text-[#2A281F]">
-                      04.
-                    </span>
-                    <span>Paket Layanan</span>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/#venue"
-                    onClick={(e) => handleNav(e, "venue")}
-                    className="font-libre-caslon text-2xl sm:text-3xl text-[#2A281F] hover:translate-x-2 transition-transform inline-flex items-baseline space-x-3 group cursor-pointer"
-                  >
-                    <span className="text-xs font-sans uppercase tracking-widest text-[#8A8477] group-hover:text-[#2A281F]">
-                      05.
-                    </span>
-                    <span>Venue Pilihan</span>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/#testimoni"
-                    onClick={(e) => handleNav(e, "testimoni")}
-                    className="font-libre-caslon text-2xl sm:text-3xl text-[#2A281F] hover:translate-x-2 transition-transform inline-flex items-baseline space-x-3 group cursor-pointer"
-                  >
-                    <span className="text-xs font-sans uppercase tracking-widest text-[#8A8477] group-hover:text-[#2A281F]">
-                      06.
-                    </span>
-                    <span>Testimoni Pasangan</span>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/#kontak-section"
-                    onClick={(e) => handleNav(e, "kontak-section")}
-                    className="font-libre-caslon text-2xl sm:text-3xl text-[#2A281F] hover:translate-x-2 transition-transform inline-flex items-baseline space-x-3 group cursor-pointer"
-                  >
-                    <span className="text-xs font-sans uppercase tracking-widest text-[#8A8477] group-hover:text-[#2A281F]">
-                      07.
-                    </span>
-                    <span>Hubungi Kami</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div className="border-t border-[#8A8477]/20 pt-6 space-y-3">
-              <p className="text-xs text-[#8A8477] tracking-wide">
-                Destination Wedding Specialist in Bali
-              </p>
+            <li>
               <a
-                href="https://wa.me/6281234567890"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs uppercase tracking-wider font-semibold text-[#2A281F] flex items-center space-x-1"
+                href="/"
+                onClick={(e) => handleNav(e, 0)}
+                className="font-libre-caslon text-2xl sm:text-3xl text-[#2A281F] hover:translate-x-2 transition-transform inline-flex items-baseline space-x-3 group cursor-pointer"
               >
-                <span>WhatsApp Concierge</span>
-                <ArrowUpRight size={14} />
+                <span className="text-xs font-sans uppercase tracking-widest text-[#8A8477] group-hover:text-[#2A281F]">
+                  01.
+                </span>
+                <span>Beranda</span>
               </a>
-            </div>
-          </div>
-
-          <div className="flex-1" onClick={() => setIsOpen(false)} />
+            </li>
+            <li>
+              <a
+                href="/#intro-section"
+                onClick={(e) => handleNav(e, "intro-section")}
+                className="font-libre-caslon text-2xl sm:text-3xl text-[#2A281F] hover:translate-x-2 transition-transform inline-flex items-baseline space-x-3 group cursor-pointer"
+              >
+                <span className="text-xs font-sans uppercase tracking-widest text-[#8A8477] group-hover:text-[#2A281F]">
+                  02.
+                </span>
+                <span>Kenapa Bali</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="/#layanan"
+                onClick={(e) => handleNav(e, "layanan")}
+                className="font-libre-caslon text-2xl sm:text-3xl text-[#2A281F] hover:translate-x-2 transition-transform inline-flex items-baseline space-x-3 group cursor-pointer"
+              >
+                <span className="text-xs font-sans uppercase tracking-widest text-[#8A8477] group-hover:text-[#2A281F]">
+                  03.
+                </span>
+                <span>Layanan Utama</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="/#paket"
+                onClick={(e) => handleNav(e, "paket")}
+                className="font-libre-caslon text-2xl sm:text-3xl text-[#2A281F] hover:translate-x-2 transition-transform inline-flex items-baseline space-x-3 group cursor-pointer"
+              >
+                <span className="text-xs font-sans uppercase tracking-widest text-[#8A8477] group-hover:text-[#2A281F]">
+                  04.
+                </span>
+                <span>Paket Layanan</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="/#venue"
+                onClick={(e) => handleNav(e, "venue")}
+                className="font-libre-caslon text-2xl sm:text-3xl text-[#2A281F] hover:translate-x-2 transition-transform inline-flex items-baseline space-x-3 group cursor-pointer"
+              >
+                <span className="text-xs font-sans uppercase tracking-widest text-[#8A8477] group-hover:text-[#2A281F]">
+                  05.
+                </span>
+                <span>Venue Pilihan</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="/#testimoni"
+                onClick={(e) => handleNav(e, "testimoni")}
+                className="font-libre-caslon text-2xl sm:text-3xl text-[#2A281F] hover:translate-x-2 transition-transform inline-flex items-baseline space-x-3 group cursor-pointer"
+              >
+                <span className="text-xs font-sans uppercase tracking-widest text-[#8A8477] group-hover:text-[#2A281F]">
+                  06.
+                </span>
+                <span>Testimoni Pasangan</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="/#kontak-section"
+                onClick={(e) => handleNav(e, "kontak-section")}
+                className="font-libre-caslon text-2xl sm:text-3xl text-[#2A281F] hover:translate-x-2 transition-transform inline-flex items-baseline space-x-3 group cursor-pointer"
+              >
+                <span className="text-xs font-sans uppercase tracking-widest text-[#8A8477] group-hover:text-[#2A281F]">
+                  07.
+                </span>
+                <span>Hubungi Kami</span>
+              </a>
+            </li>
+          </ul>
         </div>
-      ) : null;
+
+        <div className="border-t border-[#8A8477]/20 pt-6 space-y-3">
+          <p className="text-xs text-[#8A8477] tracking-wide">
+            Destination Wedding Specialist in Bali
+          </p>
+          <a
+            href="https://wa.me/6281234567890"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs uppercase tracking-wider font-semibold text-[#2A281F] flex items-center space-x-1"
+          >
+            <span>WhatsApp Concierge</span>
+            <ArrowUpRight size={14} />
+          </a>
+        </div>
+      </div>
+
+      <div className="flex-1" onClick={() => setIsOpen(false)} />
+    </div>
+  ) : null;
 
   return (
     <>
@@ -226,7 +205,10 @@ export default function Navbar() {
         </nav>
       </header>
 
-      {/* Render Slide-out Drawer into document.body with Top-Level Portal (z-[100]) */}
+      {/* Fullscreen Clip-Path Polygon Curtain Wipe (nectar-mask-reveal) */}
+      <MaskRevealCurtain ref={curtainRef} />
+
+      {/* Render Slide-out Drawer into document.body via portal (z-[100]) */}
       {mounted && menuModal ? createPortal(menuModal, document.body) : null}
     </>
   );
