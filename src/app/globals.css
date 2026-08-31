@@ -152,7 +152,6 @@ body {
 /* Clip-Path & Mask Reveal Animations (polygon nectar-mask-reveal) */
 .mask-reveal-container {
   overflow: hidden;
-  position: relative;
 }
 
 .mask-reveal-img {

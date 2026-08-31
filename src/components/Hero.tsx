@@ -37,13 +37,13 @@ export default function Hero() {
       ref={heroRef}
       className="relative w-full flex-1 min-h-[500px] sm:min-h-[540px] flex items-center justify-center overflow-hidden pt-16 sm:pt-20 pb-4 sm:pb-6"
     >
-      {/* Deep Background Layer: Hero Image with Mask Reveal */}
-      <div className="mask-reveal-container absolute inset-0 z-0 overflow-hidden">
+      {/* Deep Background Layer: Hero Image Full Bleed */}
+      <div className="absolute inset-0 z-0 overflow-hidden w-full h-full pointer-events-none">
         <img
           ref={imgRef}
           src="https://images.unsplash.com/photo-1519741497674-611481863552?q=85&w=2000&auto=format&fit=crop"
           alt="Bali Destination Wedding"
-          className="mask-reveal-img w-full h-[120%] -top-[10%] relative object-cover object-center scale-105"
+          className="w-full h-[120%] -top-[10%] relative object-cover object-center scale-105"
         />
         {/* Scrim Gradient for Legibility */}
         <div className="absolute inset-0 hero-scrim z-10" />
