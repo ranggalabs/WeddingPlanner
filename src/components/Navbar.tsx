@@ -12,36 +12,53 @@ export default function Navbar() {
     e.preventDefault();
     setIsOpen(false);
 
-    // Scroll to destination
-    scrollToTarget(target);
+    // 1. Get or create fullscreen curtain element
+    let curtain = document.getElementById("nectar-curtain-elem");
+    if (!curtain) {
+      curtain = document.createElement("div");
+      curtain.id = "nectar-curtain-elem";
+      curtain.className = "nectar-mask-curtain";
+      document.body.appendChild(curtain);
+    }
 
-    // Trigger Clip-Path & Mask Reveal Animations (nectar-mask-reveal polygon from left to right)
-    const targetElement =
-      typeof target === "string" ? document.getElementById(target) : null;
+    // 2. Animate curtain covering screen (Tirai naik menutup)
+    curtain.className = "nectar-mask-curtain entering";
 
-    if (targetElement) {
-      // 1. Apply section-level polygon clip-path reveal
-      targetElement.classList.remove("section-mask-reveal");
-      void targetElement.offsetWidth;
-      targetElement.classList.add("section-mask-reveal");
+    setTimeout(() => {
+      // 3. Scroll to destination under the curtain
+      scrollToTarget(target);
 
-      // 2. Apply clip-path polygon reveal on all images inside target section
-      const images = targetElement.querySelectorAll<HTMLImageElement>("img");
-      images.forEach((img) => {
-        img.style.clipPath = "polygon(0 0, 0 0, 0 100%, 0 100%)";
-        img.style.transition = "clip-path 1.2s cubic-bezier(0.22, 0.61, 0.36, 1)";
-        
-        requestAnimationFrame(() => {
+      // 4. Trigger polygon clip-path reveal on target element
+      const cleanId = typeof target === "string" ? target.replace(/^(\/)?#/, "") : null;
+      const targetElement = cleanId ? document.getElementById(cleanId) : null;
+
+      if (targetElement) {
+        targetElement.classList.remove("section-mask-reveal");
+        void targetElement.offsetWidth;
+        targetElement.classList.add("section-mask-reveal");
+
+        const images = targetElement.querySelectorAll<HTMLImageElement>("img");
+        images.forEach((img) => {
+          img.style.clipPath = "polygon(0 0, 0 0, 0 100%, 0 100%)";
+          img.style.transition = "clip-path 1.2s cubic-bezier(0.22, 0.61, 0.36, 1)";
           setTimeout(() => {
             img.style.clipPath = "polygon(0 0, 100% 0, 100% 100%, 0 100%)";
-          }, 150);
+          }, 50);
         });
-      });
 
-      setTimeout(() => {
-        targetElement.classList.remove("section-mask-reveal");
-      }, 1400);
-    }
+        setTimeout(() => {
+          targetElement.classList.remove("section-mask-reveal");
+        }, 1500);
+      }
+
+      // 5. Animate curtain uncovering (Tirai tersingkap ke atas/kanan)
+      if (curtain) {
+        curtain.className = "nectar-mask-curtain leaving";
+        setTimeout(() => {
+          if (curtain) curtain.className = "nectar-mask-curtain";
+        }, 750);
+      }
+    }, 450);
   };
 
   return (
