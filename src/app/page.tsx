@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import PriceTeaserStrip from "@/components/PriceTeaserStrip";
@@ -204,6 +205,48 @@ const testimonials: TestimonialItem[] = [
 ];
 
 export default function Home() {
+  /**
+   * IntersectionObserver: auto-reveal .mask-reveal-container images
+   * when each sticky section scrolls into the viewport during normal scroll.
+   * This ensures images are visible even without menu navigation.
+   */
+  useEffect(() => {
+    const sectionIds = [
+      "intro-section",
+      "layanan",
+      "paket",
+      "venue",
+      "testimoni",
+      "kontak-section",
+    ];
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const section = entry.target as HTMLElement;
+            const containers = Array.from(
+              section.querySelectorAll<HTMLElement>(".mask-reveal-container")
+            );
+            containers.forEach((c, i) => {
+              // Only auto-reveal if not already revealed (don't override menu nav animation)
+              if (!c.classList.contains("revealed")) {
+                setTimeout(() => c.classList.add("revealed"), i * 100);
+              }
+            });
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
   return (
     <main className="min-h-screen bg-[#2A281F] text-[#2A281F] relative">
       {/* Section 1: Hero & Teaser with Navbar (Layer 1: Sticky Base Screen) */}

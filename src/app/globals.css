@@ -149,30 +149,35 @@ body {
   scrollbar-width: none;
 }
 
-/* Clip-Path & Mask Reveal Animations (polygon nectar-mask-reveal) */
+/* ─────────────────────────────────────────────────────────────────────────
+   Clip-Path & Mask Reveal Animations (nectar-mask-reveal)
+   Initial State : image closed from left  → polygon(0 0, 0 0, 0 100%, 0 100%)
+   Revealed State: image fully open         → polygon(0 0, 100% 0, 100% 100%, 0 100%)
+   ───────────────────────────────────────────────────────────────────────── */
+
 .mask-reveal-container {
   overflow: hidden;
 }
 
+/* Default: image closed/hidden (left-edge polygon) */
 .mask-reveal-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-  transition: clip-path 1.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+  clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+  transition: clip-path 1.1s cubic-bezier(0.22, 0.61, 0.36, 1);
   will-change: clip-path;
 }
 
-/* Mask Reveal Transitioning State (Tutup lalu Buka) */
-.mask-reveal-img.is-wiping {
-  clip-path: polygon(0 0, 0 0, 0 100%, 0 100%) !important;
-  transition: none !important;
+/* Revealed state: container gets .revealed class → image wipes open left→right */
+.mask-reveal-container.revealed .mask-reveal-img {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
 }
 
-.mask-reveal-img.is-revealing {
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%) !important;
-  transition: clip-path 1.2s cubic-bezier(0.22, 0.61, 0.36, 1) !important;
-}
+/* Staggered reveal helpers (applied via JS delay) */
+.mask-reveal-container.reveal-delay-1 .mask-reveal-img { transition-delay: 0.10s; }
+.mask-reveal-container.reveal-delay-2 .mask-reveal-img { transition-delay: 0.22s; }
+.mask-reveal-container.reveal-delay-3 .mask-reveal-img { transition-delay: 0.34s; }
 
 /* Fullscreen Nectar Mask Wipe Overlay (Tirai Transparan) */
 .nectar-mask-curtain {
