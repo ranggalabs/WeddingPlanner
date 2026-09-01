@@ -80,10 +80,10 @@ export default function PhotoGrid({ photos, enableParallax = true }: PhotoGridPr
       className="flex md:grid md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-7 xl:gap-8 w-full overflow-x-auto md:overflow-x-visible no-scrollbar pb-2 md:pb-0 snap-x snap-mandatory"
     >
       {photos.map((photo, index) => (
-        <div key={photo.id} className="min-w-[80vw] sm:min-w-[45vw] md:min-w-0 snap-center flex flex-col shrink-0 md:shrink">
+        <div key={photo.id} className="min-w-[75vw] sm:min-w-[45vw] md:min-w-0 snap-center flex flex-col shrink-0 md:shrink">
           <Link
             href="/#kontak-section"
-            className="venue-card-item reveal-item aspect-[3/4] min-h-[220px] sm:min-h-[280px] md:min-h-[340px] lg:min-h-[380px] xl:min-h-[420px] rounded-3xl bg-[#EDEAE3] relative group cursor-pointer overflow-hidden shadow-xl border border-[#EDEAE3] transition-all duration-500 block hover:-translate-y-2 hover:shadow-[0_30px_60px_-15px_rgba(42,40,31,0.3)] w-full"
+            className="venue-card-item reveal-item aspect-[4/5] sm:aspect-[3/4] min-h-[190px] sm:min-h-[280px] md:min-h-[340px] lg:min-h-[380px] xl:min-h-[420px] rounded-2xl sm:rounded-3xl bg-[#EDEAE3] relative group cursor-pointer overflow-hidden shadow-xl border border-[#EDEAE3] transition-all duration-500 block hover:-translate-y-2 hover:shadow-[0_30px_60px_-15px_rgba(42,40,31,0.3)] w-full"
             style={{ transitionDelay: `${index * 80}ms` }}
           >
           {/* Inner Parallax Image & Mask Reveal Container */}
