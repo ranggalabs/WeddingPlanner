@@ -28,6 +28,32 @@
   --font-sans: var(--font-inter), sans-serif;
 }
 
+/* Fluid responsive typography helpers */
+.text-fluid-hero {
+  font-size: clamp(1.75rem, 1.25rem + 2.5vw, 3.75rem);
+  line-height: 1.15;
+}
+
+.text-fluid-h2 {
+  font-size: clamp(1.35rem, 1rem + 1.6vw, 2.5rem);
+  line-height: 1.2;
+}
+
+.text-fluid-h3 {
+  font-size: clamp(1.1rem, 0.95rem + 0.8vw, 1.65rem);
+  line-height: 1.25;
+}
+
+.text-fluid-body {
+  font-size: clamp(0.78rem, 0.72rem + 0.25vw, 0.95rem);
+  line-height: 1.6;
+}
+
+.text-fluid-caption {
+  font-size: clamp(0.68rem, 0.64rem + 0.18vw, 0.82rem);
+  letter-spacing: 0.18em;
+}
+
 html {
   scroll-behavior: auto !important; /* Managed by Lenis for smooth momentum */
   background-color: var(--bg-primary);

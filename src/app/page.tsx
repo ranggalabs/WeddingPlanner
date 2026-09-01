@@ -276,21 +276,21 @@ export default function Home() {
       {/* Section 3: Layanan Utama (Layer 3: Stacking Cards with Sticky Curtain Transition to Paket) */}
       <section
         id="layanan"
-        className="sticky top-0 z-30 w-full min-h-screen bg-[#F5F1E9] curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] pt-8 sm:pt-12 md:pt-14 pb-16 sm:pb-20 md:pb-24 px-4 sm:px-6 md:px-8 flex flex-col justify-start sm:justify-center overflow-hidden"
+        className="sticky top-0 z-30 w-full min-h-screen bg-[#F5F1E9] curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] pt-6 sm:pt-8 md:pt-10 pb-8 sm:pb-12 md:pb-14 px-4 sm:px-6 md:px-8 lg:px-12 flex flex-col justify-center overflow-hidden"
       >
-        <div className="max-w-5xl mx-auto w-full">
-          <div className="mb-3 sm:mb-5 md:mb-6">
+        <div className="max-w-6xl xl:max-w-7xl mx-auto w-full flex flex-col justify-center my-auto">
+          <div className="mb-4 sm:mb-5 md:mb-6">
             <SectionHeading
               subtitle="KELEBIHAN LAYANAN"
               title="Pendekatan Editorial Dalam Setiap Detail"
-              description="Kami memadukan ketelitian perencanaan profesional dengan kebebasan seni dekorasi modern."
+              description="Kami memadukan ketelitian perencanaan profesional dengan kebebasan seni dekorasi modern untuk menciptakan momen abadi."
             />
           </div>
 
-          {/* Service Cards Stacking Container (Card 1 di atas, Card 2 di bawahnya, fit 1 screen) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 w-full">
-            <ServiceCard service={services[0]} className="shadow-lg w-full" />
-            <ServiceCard service={services[1]} className="shadow-lg w-full" />
+          {/* Service Cards Stacking Container (Curated 2-column editorial luxury cards) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 lg:gap-8 w-full items-stretch">
+            <ServiceCard service={services[0]} className="shadow-xl w-full" />
+            <ServiceCard service={services[1]} className="shadow-xl w-full" />
           </div>
         </div>
       </section>
@@ -298,17 +298,19 @@ export default function Home() {
       {/* Section 4: Paket Layanan (Layer 4: Curtain Sheet 3 - Generous Clearance for All Cards & CTAs) */}
       <section
         id="paket"
-        className="sticky top-0 z-40 w-full min-h-screen bg-white curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] pt-10 sm:pt-14 md:pt-16 pb-20 sm:pb-24 md:pb-28 px-4 sm:px-6 md:px-8 flex flex-col justify-start sm:justify-center"
+        className="sticky top-0 z-40 w-full min-h-screen bg-white curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] pt-6 sm:pt-8 md:pt-10 pb-8 sm:pb-12 md:pb-14 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 flex flex-col justify-center overflow-hidden"
       >
-        <div className="max-w-7xl mx-auto w-full">
-          <SectionHeading
-            subtitle="PENELUSURAN INVESTASI"
-            title="Kurasi Paket Layanan Pernikahan"
-            description="Pilih skema perencanaan yang sesuai dengan skala perayaan dan visi unik yang Anda impikan."
-          />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 items-stretch">
+        <div className="max-w-7xl mx-auto w-full flex flex-col justify-center my-auto">
+          <div className="mb-3 sm:mb-4 md:mb-5">
+            <SectionHeading
+              subtitle="PENELUSURAN INVESTASI"
+              title="Kurasi Paket Layanan Pernikahan"
+              description="Pilih skema perencanaan yang sesuai dengan skala perayaan dan visi unik yang Anda impikan."
+            />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6 items-stretch w-full">
             {packages.map((pkg) => (
-              <PackageCard key={pkg.id} pkg={pkg} layout="vertical" className="h-full shadow-lg" />
+              <PackageCard key={pkg.id} pkg={pkg} layout="vertical" className="h-full shadow-xl" />
             ))}
           </div>
         </div>
@@ -317,14 +319,16 @@ export default function Home() {
       {/* Section 5: Venue Wedding (Layer 5: Curtain Sheet 4 - Generous Clearance for 3:4 Portrait Grid) */}
       <section
         id="venue"
-        className="sticky top-0 z-50 w-full min-h-screen bg-[#F5F1E9] curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] pt-10 sm:pt-14 md:pt-16 pb-20 sm:pb-24 md:pb-28 px-4 sm:px-6 md:px-8 flex flex-col justify-start sm:justify-center"
+        className="sticky top-0 z-50 w-full min-h-screen bg-[#F5F1E9] curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] pt-6 sm:pt-8 md:pt-10 pb-8 sm:pb-12 md:pb-14 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 flex flex-col justify-center overflow-hidden"
       >
-        <div className="max-w-7xl mx-auto w-full">
-          <SectionHeading
-            subtitle="LOKASI IKONIK"
-            title="Venue Wedding Pilihan di Bali"
-            description="Koleksi kemitraan eksklusif bersama resort bintang lima, private estate, dan chapel terkemuka."
-          />
+        <div className="max-w-7xl 2xl:max-w-[1400px] mx-auto w-full flex flex-col justify-center my-auto">
+          <div className="mb-3 sm:mb-4 md:mb-5">
+            <SectionHeading
+              subtitle="LOKASI IKONIK"
+              title="Venue Wedding Pilihan di Bali"
+              description="Koleksi kemitraan eksklusif bersama resort bintang lima, private estate, dan chapel terkemuka."
+            />
+          </div>
           <PhotoGrid photos={venueGridPhotos} />
         </div>
       </section>
@@ -332,14 +336,16 @@ export default function Home() {
       {/* Section 6: Testimoni Pasangan (Layer 6: Curtain Sheet 5 - Generous Clearance for Reviews) */}
       <section
         id="testimoni"
-        className="sticky top-0 z-[60] w-full min-h-screen bg-white curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] pt-10 sm:pt-14 md:pt-16 pb-20 sm:pb-24 md:pb-28 px-4 sm:px-6 md:px-8 flex flex-col justify-start sm:justify-center"
+        className="sticky top-0 z-[60] w-full min-h-screen bg-white curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] pt-6 sm:pt-8 md:pt-10 pb-8 sm:pb-12 md:pb-14 px-4 sm:px-6 md:px-8 lg:px-12 flex flex-col justify-center overflow-hidden"
       >
-        <div className="max-w-6xl mx-auto w-full">
-          <SectionHeading
-            subtitle="CERITA PASANGAN"
-            title="Kesan Abadi Dari Pasangan Kami"
-            description="Pengalaman jujur dari pasangan yang telah mempercayakan perayaan hari bahagia mereka bersama Bali Wed."
-          />
+        <div className="max-w-7xl mx-auto w-full flex flex-col justify-center my-auto">
+          <div className="mb-3 sm:mb-4 md:mb-5">
+            <SectionHeading
+              subtitle="CERITA PASANGAN"
+              title="Kesan Abadi Dari Pasangan Kami"
+              description="Pengalaman jujur dari pasangan yang telah mempercayakan perayaan hari bahagia mereka bersama Bali Wed."
+            />
+          </div>
           <TestimonialCarousel testimonials={testimonials} />
         </div>
       </section>

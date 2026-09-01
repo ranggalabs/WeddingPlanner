@@ -86,26 +86,26 @@ export default function TestimonialCarousel({ testimonials }: TestimonialCarouse
         {testimonials.map((item) => (
           <div
             key={item.id}
-            className="flex-none w-[270px] sm:w-[320px] md:w-[360px] snap-start bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 border border-[#EDEAE3] shadow-md flex flex-col justify-between"
+            className="flex-none w-[280px] sm:w-[340px] md:w-[380px] lg:w-[420px] snap-start bg-white rounded-3xl p-5 sm:p-6 lg:p-7 border border-[#EDEAE3] shadow-lg flex flex-col justify-between hover:shadow-xl transition-all duration-300"
           >
             <div>
-              <Quote size={22} className="text-[#8A8477]/30 mb-2.5" />
-              <p className="font-libre-caslon text-xs sm:text-sm md:text-base text-[#2A281F] font-normal leading-relaxed mb-4 italic line-clamp-4">
+              <Quote size={24} className="text-[#8A8477]/30 mb-3" />
+              <p className="font-libre-caslon text-sm sm:text-base lg:text-lg text-[#2A281F] font-normal leading-relaxed mb-5 italic line-clamp-4">
                 "{item.quote}"
               </p>
             </div>
 
-            <div className="flex items-center space-x-3 pt-3 border-t border-[#EDEAE3]">
+            <div className="flex items-center space-x-3.5 pt-3.5 border-t border-[#EDEAE3]">
               <img
                 src={item.avatar}
                 alt={item.coupleName}
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover border border-[#EDEAE3]"
+                className="w-10 h-10 sm:w-11 sm:h-11 rounded-full object-cover border border-[#EDEAE3]"
               />
               <div>
-                <h4 className="font-libre-caslon text-xs sm:text-sm font-medium text-[#2A281F]">
+                <h4 className="font-libre-caslon text-sm sm:text-base font-medium text-[#2A281F]">
                   {item.coupleName}
                 </h4>
-                <p className="text-[9px] sm:text-[10px] uppercase tracking-wider text-[#8A8477]">
+                <p className="text-[10px] sm:text-xs uppercase tracking-wider text-[#8A8477]">
                   {item.locationYear}
                 </p>
               </div>

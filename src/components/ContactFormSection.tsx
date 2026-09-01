@@ -22,10 +22,10 @@ export default function ContactFormSection() {
   return (
     <section
       id="kontak-section"
-      className="sticky top-0 z-[70] w-full min-h-screen bg-[#F5F1E9] curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] pt-8 sm:pt-10 md:pt-12 pb-14 sm:pb-16 md:pb-20 px-4 sm:px-6 md:px-8 flex flex-col justify-start sm:justify-center overflow-hidden"
+      className="sticky top-0 z-[70] w-full min-h-screen bg-[#F5F1E9] curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] pt-6 sm:pt-8 md:pt-10 pb-8 sm:pb-12 md:pb-14 px-4 sm:px-6 md:px-8 lg:px-12 flex flex-col justify-center overflow-hidden"
     >
-      <div className="max-w-3xl mx-auto w-full">
-        <div className="mb-2 sm:mb-3">
+      <div className="max-w-4xl xl:max-w-5xl mx-auto w-full flex flex-col justify-center my-auto">
+        <div className="mb-2 sm:mb-3 md:mb-4">
           <SectionHeading
             subtitle="MULAI PERJALANAN ANDA"
             title="Mari Rencanakan Pernikahan Impian Anda di Bali"
@@ -33,7 +33,7 @@ export default function ContactFormSection() {
           />
         </div>
 
-        <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 border border-[#EDEAE3] shadow-lg">
+        <div className="bg-white rounded-3xl p-5 sm:p-6 md:p-7 border border-[#EDEAE3] shadow-xl">
           {submitted ? (
             <div className="text-center py-5 sm:py-6 space-y-2.5">
               <CheckCircle2 size={32} className="mx-auto text-[#2A281F]" />

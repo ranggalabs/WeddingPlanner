@@ -51,24 +51,24 @@ export default function Hero() {
 
       {/* Base & Fore Layer Content (Unified, cohesive text flow) */}
       <div className="relative z-20 w-full max-w-4xl mx-auto px-6 text-white flex flex-col items-center text-center my-auto">
-        <div className="mb-2.5 sm:mb-3">
-          <p className="text-[10px] sm:text-xs uppercase tracking-[0.25em] text-white/85 font-medium px-3.5 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 inline-block shadow-sm">
+        <div className="mb-2 sm:mb-3">
+          <p className="text-fluid-caption uppercase text-white/85 font-medium px-3.5 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 inline-block shadow-sm">
             Luxury Destination Wedding Organizer
           </p>
         </div>
 
-        <h1 className="font-libre-caslon text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-normal leading-[1.15] max-w-3xl mb-3 sm:mb-4 drop-shadow-md">
+        <h1 className="font-libre-caslon text-fluid-hero font-normal max-w-4xl mb-3 sm:mb-4 drop-shadow-md">
           Bali bukan sekadar lokasi, tapi cerita yang akan diingat.
         </h1>
 
-        <p className="text-xs sm:text-sm md:text-base text-white/90 max-w-xl font-light leading-relaxed mb-4 sm:mb-6">
+        <p className="text-fluid-body text-white/90 max-w-2xl font-light mb-4 sm:mb-6">
           Mengkurasi pernikahan impian di tebing Uluwatu, ketenangan Ubud, hingga pesisir pantai Nusa Dua dengan pendekatan modern editorial.
         </p>
 
         <div>
           <Link
             href="/#intro-section"
-            className="inline-flex items-center space-x-2 text-[11px] sm:text-xs uppercase tracking-widest text-white/90 hover:text-white transition-all group cursor-pointer border border-white/20 bg-white/10 backdrop-blur-sm px-4 py-1.5 rounded-full hover:bg-white/20 shadow-sm"
+            className="inline-flex items-center space-x-2 text-fluid-caption uppercase text-white/90 hover:text-white transition-all group cursor-pointer border border-white/20 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full hover:bg-white/20 shadow-sm"
           >
             <span>Jelajahi Pengalaman</span>
             <ArrowDown size={13} className="group-hover:translate-y-1 transition-transform" />
