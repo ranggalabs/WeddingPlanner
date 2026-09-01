@@ -84,7 +84,7 @@ export default function PhotoTicker({ photos }: PhotoTickerProps) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onMouseMove={handleMouseMove}
-      className="relative w-full overflow-hidden select-none group cursor-grab active:cursor-grabbing py-3 sm:py-4 bg-[#F5F1E9]/30 border-y border-[#EDEAE3]"
+      className="relative w-full overflow-hidden select-none group cursor-none py-3 sm:py-4 bg-[#F5F1E9]/30 border-y border-[#EDEAE3]"
     >
       {/* Custom Drag Floating Cursor Indicator */}
       {isHovered && (
