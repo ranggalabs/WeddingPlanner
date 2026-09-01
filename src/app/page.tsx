@@ -259,9 +259,9 @@ export default function Home() {
       {/* Section 2: Intro & Photo Ticker (Layer 2: Curtain Sheet 1) */}
       <section
         id="intro-section"
-        className="relative md:sticky top-0 z-20 w-full min-h-[100dvh] bg-white curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[32px] sm:rounded-t-[48px] pt-12 sm:pt-14 md:pt-16 pb-16 sm:pb-20 md:pb-24 flex flex-col justify-center overflow-x-hidden"
+        className="sticky top-0 z-20 w-full min-h-[100dvh] bg-white curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[32px] sm:rounded-t-[48px] pt-6 sm:pt-10 md:pt-14 pb-8 sm:pb-14 md:pb-18 flex flex-col justify-center overflow-hidden"
       >
-        <div className="px-4 sm:px-6 md:px-8 max-w-7xl mx-auto mb-4 sm:mb-6 md:mb-8 w-full">
+        <div className="px-4 sm:px-6 md:px-8 max-w-7xl mx-auto mb-3 sm:mb-6 md:mb-8 w-full">
           <SectionHeading
             subtitle="KENAPA BALI"
             title="Setiap Pernikahan Punya Cerita Sendiri"
@@ -276,10 +276,10 @@ export default function Home() {
       {/* Section 3: Layanan Utama (Layer 3: Stacking Cards with Sticky Curtain Transition to Paket) */}
       <section
         id="layanan"
-        className="relative md:sticky top-0 z-30 w-full min-h-[100dvh] bg-[#F5F1E9] curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[32px] sm:rounded-t-[48px] pt-10 sm:pt-12 md:pt-10 pb-16 sm:pb-16 md:pb-14 px-4 sm:px-6 md:px-8 lg:px-12 flex flex-col justify-center"
+        className="sticky top-0 z-30 w-full min-h-[100dvh] bg-[#F5F1E9] curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[32px] sm:rounded-t-[48px] pt-4 sm:pt-8 md:pt-10 pb-8 sm:pb-12 md:pb-14 px-4 sm:px-6 md:px-8 lg:px-12 flex flex-col justify-center overflow-hidden"
       >
-        <div className="max-w-6xl xl:max-w-7xl mx-auto w-full flex flex-col justify-center my-auto py-2">
-          <div className="mb-4 sm:mb-5 md:mb-6">
+        <div className="max-w-6xl xl:max-w-7xl mx-auto w-full flex flex-col justify-center my-auto">
+          <div className="mb-2 sm:mb-4 md:mb-6">
             <SectionHeading
               subtitle="KELEBIHAN LAYANAN"
               title="Pendekatan Editorial Dalam Setiap Detail"
@@ -287,10 +287,14 @@ export default function Home() {
             />
           </div>
 
-          {/* Service Cards Container */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 lg:gap-8 w-full items-stretch">
-            <ServiceCard service={services[0]} className="shadow-xl w-full" />
-            <ServiceCard service={services[1]} className="shadow-xl w-full" />
+          {/* Service Cards Container: horizontal scroll on mobile, 2-column grid on desktop */}
+          <div className="flex md:grid md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 w-full items-stretch overflow-x-auto md:overflow-x-visible no-scrollbar pb-2 md:pb-0 snap-x snap-mandatory">
+            <div className="min-w-[85vw] sm:min-w-[70vw] md:min-w-0 snap-center flex flex-col">
+              <ServiceCard service={services[0]} className="shadow-xl w-full h-full" />
+            </div>
+            <div className="min-w-[85vw] sm:min-w-[70vw] md:min-w-0 snap-center flex flex-col">
+              <ServiceCard service={services[1]} className="shadow-xl w-full h-full" />
+            </div>
           </div>
         </div>
       </section>
@@ -298,19 +302,22 @@ export default function Home() {
       {/* Section 4: Paket Layanan (Layer 4: Curtain Sheet 3 - Generous Clearance for All Cards & CTAs) */}
       <section
         id="paket"
-        className="relative md:sticky top-0 z-40 w-full min-h-[100dvh] bg-white curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[32px] sm:rounded-t-[48px] pt-10 sm:pt-12 md:pt-10 pb-16 sm:pb-16 md:pb-14 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 flex flex-col justify-center"
+        className="sticky top-0 z-40 w-full min-h-[100dvh] bg-white curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[32px] sm:rounded-t-[48px] pt-4 sm:pt-8 md:pt-10 pb-8 sm:pb-12 md:pb-14 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 flex flex-col justify-center overflow-hidden"
       >
-        <div className="max-w-7xl mx-auto w-full flex flex-col justify-center my-auto py-2">
-          <div className="mb-4 sm:mb-5 md:mb-5">
+        <div className="max-w-7xl mx-auto w-full flex flex-col justify-center my-auto">
+          <div className="mb-2 sm:mb-4 md:mb-5">
             <SectionHeading
               subtitle="PENELUSURAN INVESTASI"
               title="Kurasi Paket Layanan Pernikahan"
               description="Pilih skema perencanaan yang sesuai dengan skala perayaan dan visi unik yang Anda impikan."
             />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 items-stretch w-full">
+          {/* Package Cards: swipeable on mobile, 3-column grid on desktop */}
+          <div className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6 items-stretch w-full overflow-x-auto md:overflow-x-visible no-scrollbar pb-2 md:pb-0 snap-x snap-mandatory">
             {packages.map((pkg) => (
-              <PackageCard key={pkg.id} pkg={pkg} layout="vertical" className="h-full shadow-xl" />
+              <div key={pkg.id} className="min-w-[85vw] sm:min-w-[65vw] md:min-w-0 snap-center flex flex-col">
+                <PackageCard pkg={pkg} layout="vertical" className="h-full shadow-xl" />
+              </div>
             ))}
           </div>
         </div>
@@ -319,10 +326,10 @@ export default function Home() {
       {/* Section 5: Venue Wedding (Layer 5: Curtain Sheet 4 - Generous Clearance for 3:4 Portrait Grid) */}
       <section
         id="venue"
-        className="relative md:sticky top-0 z-50 w-full min-h-[100dvh] bg-[#F5F1E9] curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[32px] sm:rounded-t-[48px] pt-10 sm:pt-12 md:pt-10 pb-16 sm:pb-16 md:pb-14 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 flex flex-col justify-center"
+        className="sticky top-0 z-50 w-full min-h-[100dvh] bg-[#F5F1E9] curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[32px] sm:rounded-t-[48px] pt-4 sm:pt-8 md:pt-10 pb-8 sm:pb-12 md:pb-14 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 flex flex-col justify-center overflow-hidden"
       >
-        <div className="max-w-7xl 2xl:max-w-[1400px] mx-auto w-full flex flex-col justify-center my-auto py-2">
-          <div className="mb-4 sm:mb-5 md:mb-5">
+        <div className="max-w-7xl 2xl:max-w-[1400px] mx-auto w-full flex flex-col justify-center my-auto">
+          <div className="mb-2 sm:mb-4 md:mb-5">
             <SectionHeading
               subtitle="LOKASI IKONIK"
               title="Venue Wedding Pilihan di Bali"
@@ -336,10 +343,10 @@ export default function Home() {
       {/* Section 6: Testimoni Pasangan (Layer 6: Curtain Sheet 5 - Generous Clearance for Reviews) */}
       <section
         id="testimoni"
-        className="relative md:sticky top-0 z-[60] w-full min-h-[100dvh] bg-white curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[32px] sm:rounded-t-[48px] pt-10 sm:pt-12 md:pt-10 pb-16 sm:pb-16 md:pb-14 px-4 sm:px-6 md:px-8 lg:px-12 flex flex-col justify-center"
+        className="sticky top-0 z-[60] w-full min-h-[100dvh] bg-white curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[32px] sm:rounded-t-[48px] pt-4 sm:pt-8 md:pt-10 pb-8 sm:pb-12 md:pb-14 px-4 sm:px-6 md:px-8 lg:px-12 flex flex-col justify-center overflow-hidden"
       >
-        <div className="max-w-7xl mx-auto w-full flex flex-col justify-center my-auto py-2">
-          <div className="mb-4 sm:mb-5 md:mb-5">
+        <div className="max-w-7xl mx-auto w-full flex flex-col justify-center my-auto">
+          <div className="mb-2 sm:mb-4 md:mb-5">
             <SectionHeading
               subtitle="CERITA PASANGAN"
               title="Kesan Abadi Dari Pasangan Kami"
