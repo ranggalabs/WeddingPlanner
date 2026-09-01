@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ArrowUpRight, MapPin, Users } from "lucide-react";
+import { ArrowUpRight, MapPin, Users, ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 export interface PhotoItem {
@@ -75,17 +75,40 @@ export default function PhotoGrid({ photos, enableParallax = true }: PhotoGridPr
   }, [enableParallax]);
 
   return (
-    <div
-      ref={gridRef}
-      className="flex md:grid md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-7 xl:gap-8 w-full overflow-x-auto md:overflow-x-visible no-scrollbar pb-2 md:pb-0 snap-x snap-mandatory"
-    >
-      {photos.map((photo, index) => (
-        <div key={photo.id} className="min-w-[75vw] sm:min-w-[45vw] md:min-w-0 snap-center flex flex-col shrink-0 md:shrink">
-          <Link
-            href="/#kontak-section"
-            className="venue-card-item reveal-item aspect-[4/5] sm:aspect-[3/4] min-h-[190px] sm:min-h-[280px] md:min-h-[340px] lg:min-h-[380px] xl:min-h-[420px] rounded-2xl sm:rounded-3xl bg-[#EDEAE3] relative group cursor-pointer overflow-hidden shadow-xl border border-[#EDEAE3] transition-all duration-500 block hover:-translate-y-2 hover:shadow-[0_30px_60px_-15px_rgba(42,40,31,0.3)] w-full"
-            style={{ transitionDelay: `${index * 80}ms` }}
-          >
+    <div className="relative w-full">
+      {/* Mobile / Tablet Next & Prev Controls */}
+      <div className="flex md:hidden justify-end items-center space-x-2 mb-3 px-1">
+        <button
+          onClick={() => {
+            if (gridRef.current) gridRef.current.scrollBy({ left: -window.innerWidth * 0.8, behavior: "smooth" });
+          }}
+          className="w-9 h-9 rounded-full border border-[#2A281F]/20 bg-white text-[#2A281F] active:bg-[#2A281F] active:text-white flex items-center justify-center shadow-sm"
+          aria-label="Previous venue"
+        >
+          <ChevronLeft size={16} />
+        </button>
+        <button
+          onClick={() => {
+            if (gridRef.current) gridRef.current.scrollBy({ left: window.innerWidth * 0.8, behavior: "smooth" });
+          }}
+          className="w-9 h-9 rounded-full border border-[#2A281F]/20 bg-white text-[#2A281F] active:bg-[#2A281F] active:text-white flex items-center justify-center shadow-sm"
+          aria-label="Next venue"
+        >
+          <ChevronRight size={16} />
+        </button>
+      </div>
+
+      <div
+        ref={gridRef}
+        className="flex md:grid md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-7 xl:gap-8 w-full overflow-x-auto md:overflow-x-visible no-scrollbar pb-2 md:pb-0 snap-x snap-mandatory"
+      >
+        {photos.map((photo, index) => (
+          <div key={photo.id} className="min-w-[80vw] sm:min-w-[45vw] md:min-w-0 snap-center flex flex-col shrink-0 md:shrink">
+            <Link
+              href="/#kontak-section"
+              className="venue-card-item reveal-item aspect-[4/5] sm:aspect-[3/4] min-h-[190px] sm:min-h-[280px] md:min-h-[340px] lg:min-h-[380px] xl:min-h-[420px] rounded-2xl sm:rounded-3xl bg-[#EDEAE3] relative group cursor-pointer overflow-hidden shadow-xl border border-[#EDEAE3] transition-all duration-500 block hover:-translate-y-2 hover:shadow-[0_30px_60px_-15px_rgba(42,40,31,0.3)] w-full"
+              style={{ transitionDelay: `${index * 80}ms` }}
+            >
           {/* Inner Parallax Image & Mask Reveal Container */}
           <div className="mask-reveal-container absolute inset-0 overflow-hidden w-full h-full">
             <img
@@ -131,6 +154,7 @@ export default function PhotoGrid({ photos, enableParallax = true }: PhotoGridPr
         </Link>
         </div>
       ))}
+      </div>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import PriceTeaserStrip from "@/components/PriceTeaserStrip";
@@ -276,23 +277,53 @@ export default function Home() {
       {/* Section 3: Layanan Utama (Layer 3: Stacking Cards with Sticky Curtain Transition to Paket) */}
       <section
         id="layanan"
-        className="sticky top-0 z-30 w-full min-h-[100dvh] bg-[#F5F1E9] curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[32px] sm:rounded-t-[48px] pt-4 sm:pt-8 md:pt-10 pb-12 sm:pb-12 md:pb-14 px-4 sm:px-6 md:px-8 lg:px-12 flex flex-col justify-center overflow-hidden"
+        className="sticky top-0 z-30 w-full min-h-[100dvh] bg-[#F5F1E9] curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[32px] sm:rounded-t-[48px] pt-4 sm:pt-8 md:pt-10 pb-8 sm:pb-12 md:pb-14 px-4 sm:px-6 md:px-8 lg:px-12 flex flex-col justify-center overflow-hidden"
       >
         <div className="max-w-6xl xl:max-w-7xl mx-auto w-full flex flex-col justify-center my-auto">
-          <div className="mb-2 sm:mb-4 md:mb-6">
-            <SectionHeading
-              subtitle="KELEBIHAN LAYANAN"
-              title="Pendekatan Editorial Dalam Setiap Detail"
-              description="Kami memadukan ketelitian perencanaan profesional dengan kebebasan seni dekorasi modern untuk menciptakan momen abadi."
-            />
+          <div className="flex items-center justify-between mb-2 sm:mb-4 md:mb-6">
+            <div className="flex-1">
+              <SectionHeading
+                subtitle="KELEBIHAN LAYANAN"
+                title="Pendekatan Editorial Dalam Setiap Detail"
+                description="Kami memadukan ketelitian perencanaan profesional dengan kebebasan seni dekorasi modern untuk menciptakan momen abadi."
+                centered={false}
+              />
+            </div>
+
+            {/* Mobile / Tablet Next & Prev Controls */}
+            <div className="flex md:hidden items-center space-x-2 shrink-0 self-end mb-3 ml-3">
+              <button
+                onClick={() => {
+                  const el = document.getElementById("layanan-cards-container");
+                  if (el) el.scrollBy({ left: -window.innerWidth * 0.85, behavior: "smooth" });
+                }}
+                className="w-9 h-9 rounded-full border border-[#2A281F]/20 bg-white text-[#2A281F] active:bg-[#2A281F] active:text-white flex items-center justify-center shadow-sm"
+                aria-label="Previous service"
+              >
+                <ChevronLeft size={16} />
+              </button>
+              <button
+                onClick={() => {
+                  const el = document.getElementById("layanan-cards-container");
+                  if (el) el.scrollBy({ left: window.innerWidth * 0.85, behavior: "smooth" });
+                }}
+                className="w-9 h-9 rounded-full border border-[#2A281F]/20 bg-white text-[#2A281F] active:bg-[#2A281F] active:text-white flex items-center justify-center shadow-sm"
+                aria-label="Next service"
+              >
+                <ChevronRight size={16} />
+              </button>
+            </div>
           </div>
 
-          {/* Service Cards Container: smooth swipeable on mobile, 2-column grid on desktop */}
-          <div className="flex md:grid md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 w-full items-stretch overflow-x-auto md:overflow-x-visible no-scrollbar py-1 pb-3 md:pb-0 snap-x snap-mandatory touch-pan-x" style={{ WebkitOverflowScrolling: "touch" }}>
-            <div className="min-w-[82vw] sm:min-w-[70vw] md:min-w-0 snap-center flex flex-col shrink-0 md:shrink">
+          {/* Service Cards Container */}
+          <div
+            id="layanan-cards-container"
+            className="flex md:grid md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 w-full items-stretch overflow-x-auto md:overflow-x-visible no-scrollbar py-1 pb-2 md:pb-0 snap-x snap-mandatory"
+          >
+            <div className="min-w-[85vw] sm:min-w-[70vw] md:min-w-0 snap-center flex flex-col shrink-0 md:shrink">
               <ServiceCard service={services[0]} className="shadow-xl w-full h-full" />
             </div>
-            <div className="min-w-[82vw] sm:min-w-[70vw] md:min-w-0 snap-center flex flex-col shrink-0 md:shrink">
+            <div className="min-w-[85vw] sm:min-w-[70vw] md:min-w-0 snap-center flex flex-col shrink-0 md:shrink">
               <ServiceCard service={services[1]} className="shadow-xl w-full h-full" />
             </div>
           </div>
@@ -302,20 +333,51 @@ export default function Home() {
       {/* Section 4: Paket Layanan (Layer 4: Curtain Sheet 3 - Generous Clearance for All Cards & CTAs) */}
       <section
         id="paket"
-        className="sticky top-0 z-40 w-full min-h-[100dvh] bg-white curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[32px] sm:rounded-t-[48px] pt-4 sm:pt-8 md:pt-10 pb-12 sm:pb-12 md:pb-14 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 flex flex-col justify-center overflow-hidden"
+        className="sticky top-0 z-40 w-full min-h-[100dvh] bg-white curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[32px] sm:rounded-t-[48px] pt-4 sm:pt-8 md:pt-10 pb-8 sm:pb-12 md:pb-14 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 flex flex-col justify-center overflow-hidden"
       >
         <div className="max-w-7xl mx-auto w-full flex flex-col justify-center my-auto">
-          <div className="mb-2 sm:mb-4 md:mb-5">
-            <SectionHeading
-              subtitle="PENELUSURAN INVESTASI"
-              title="Kurasi Paket Layanan Pernikahan"
-              description="Pilih skema perencanaan yang sesuai dengan skala perayaan dan visi unik yang Anda impikan."
-            />
+          <div className="flex items-center justify-between mb-2 sm:mb-4 md:mb-5">
+            <div className="flex-1">
+              <SectionHeading
+                subtitle="PENELUSURAN INVESTASI"
+                title="Kurasi Paket Layanan Pernikahan"
+                description="Pilih skema perencanaan yang sesuai dengan skala perayaan dan visi unik yang Anda impikan."
+                centered={false}
+              />
+            </div>
+
+            {/* Mobile / Tablet Next & Prev Controls */}
+            <div className="flex md:hidden items-center space-x-2 shrink-0 self-end mb-3 ml-3">
+              <button
+                onClick={() => {
+                  const el = document.getElementById("paket-cards-container");
+                  if (el) el.scrollBy({ left: -window.innerWidth * 0.85, behavior: "smooth" });
+                }}
+                className="w-9 h-9 rounded-full border border-[#2A281F]/20 bg-white text-[#2A281F] active:bg-[#2A281F] active:text-white flex items-center justify-center shadow-sm"
+                aria-label="Previous package"
+              >
+                <ChevronLeft size={16} />
+              </button>
+              <button
+                onClick={() => {
+                  const el = document.getElementById("paket-cards-container");
+                  if (el) el.scrollBy({ left: window.innerWidth * 0.85, behavior: "smooth" });
+                }}
+                className="w-9 h-9 rounded-full border border-[#2A281F]/20 bg-white text-[#2A281F] active:bg-[#2A281F] active:text-white flex items-center justify-center shadow-sm"
+                aria-label="Next package"
+              >
+                <ChevronRight size={16} />
+              </button>
+            </div>
           </div>
-          {/* Package Cards: smooth swipeable on mobile, 3-column grid on desktop */}
-          <div className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6 items-stretch w-full overflow-x-auto md:overflow-x-visible no-scrollbar py-1 pb-3 md:pb-0 snap-x snap-mandatory touch-pan-x" style={{ WebkitOverflowScrolling: "touch" }}>
+
+          {/* Package Cards */}
+          <div
+            id="paket-cards-container"
+            className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6 items-stretch w-full overflow-x-auto md:overflow-x-visible no-scrollbar py-1 pb-2 md:pb-0 snap-x snap-mandatory"
+          >
             {packages.map((pkg) => (
-              <div key={pkg.id} className="min-w-[82vw] sm:min-w-[65vw] md:min-w-0 snap-center flex flex-col shrink-0 md:shrink">
+              <div key={pkg.id} className="min-w-[85vw] sm:min-w-[65vw] md:min-w-0 snap-center flex flex-col shrink-0 md:shrink">
                 <PackageCard pkg={pkg} layout="vertical" className="h-full shadow-xl" />
               </div>
             ))}
