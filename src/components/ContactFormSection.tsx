@@ -22,7 +22,7 @@ export default function ContactFormSection() {
   return (
     <section
       id="kontak-section"
-      className="sticky top-0 z-[70] w-full min-h-screen bg-[#F5F1E9] curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[36px] sm:rounded-t-[48px] pt-6 sm:pt-8 md:pt-10 pb-8 sm:pb-12 md:pb-14 px-4 sm:px-6 md:px-8 lg:px-12 flex flex-col justify-center overflow-hidden"
+      className="relative md:sticky top-0 z-[70] w-full min-h-[100dvh] bg-[#F5F1E9] curtain-shadow-top shadow-[0_-30px_60px_rgba(0,0,0,0.22)] rounded-t-[32px] sm:rounded-t-[48px] pt-10 sm:pt-12 md:pt-10 pb-16 sm:pb-16 md:pb-14 px-4 sm:px-6 md:px-8 lg:px-12 flex flex-col justify-center"
     >
       <div className="max-w-4xl xl:max-w-5xl mx-auto w-full flex flex-col justify-center my-auto">
         <div className="mb-2 sm:mb-3 md:mb-4">
